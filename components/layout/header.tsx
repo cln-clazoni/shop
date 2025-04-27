@@ -52,7 +52,7 @@ export default function Header() {
       <div className="container flex h-16 items-center">
         <div className="mr-4 flex">
           <Link href="/" className="flex items-center space-x-2">
-            <img src="/tiendaCLN.png" alt="Logo" className="h-8" />
+            <img src="public/tiendaCLN.png" alt="Logo" className="h-8" />
             {/* <span className="font-bold text-xl">CLN - Clazoni</span> */}
           </Link>
         </div>
