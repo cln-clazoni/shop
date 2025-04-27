@@ -56,7 +56,7 @@ export default function Header() {
         <div className="mr-4 ml-4 flex">
           <Link href="/" className="flex items-center space-x-2">
             <Image
-              src="/images/tiendaCLN.png" // Ruta pública de la imagen
+              src="https://github.com/cln-clazoni/shop/blob/main/public/images/tiendaCLN.png" // Ruta pública de la imagen
               alt="Logo"
               height={50} // Ajusta el tamaño
               width={100}
