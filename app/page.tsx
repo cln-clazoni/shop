@@ -26,7 +26,7 @@ export default function Home() {
         <div className="container relative z-10 mx-auto px-4">
           <div className="max-w-xl">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
-              Encuentra el instrumento perfecto para tu música
+              Encuentra el instrumento perfecto para tí.
             </h1>
             <p className="text-lg text-white/80 mb-8">
               Amplio catálogo de instrumentos musicales de las mejores marcas con la mejor calidad y precio.
@@ -38,7 +38,7 @@ export default function Home() {
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="text-white border-white hover:bg-white/10">
+              <Button asChild variant="outline" size="lg" className="text-black border-white hover:bg-white/10 hover:text-white bg-[#FFFFFF]">
                 <Link href="/contact">
                   Contactar
                 </Link>
@@ -58,7 +58,7 @@ export default function Home() {
               { name: "Viento", image: "https://images.pexels.com/photos/1049690/pexels-photo-1049690.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1", href: "/catalog/viento" },
               { name: "Percusión", image: "https://images.pexels.com/photos/995301/pexels-photo-995301.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1", href: "/catalog/percusion" },
               { name: "Teclados", image: "https://images.pexels.com/photos/164935/pexels-photo-164935.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1", href: "/catalog/teclados" },
-              { name: "Electrónicos", image: "https://images.pexels.com/photos/1656066/pexels-photo-1656066.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1", href: "/catalog/electronicos" },
+              { name: "Accesorios", image: "https://images.pexels.com/photos/1656066/pexels-photo-1656066.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1", href: "/catalog/electronicos" },
             ].map((category) => (
               <Link key={category.name} href={category.href}>
                 <div className="group relative h-64 rounded-lg overflow-hidden transition-transform hover:scale-105">
