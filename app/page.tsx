@@ -4,6 +4,7 @@ import { ArrowRight, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { instrumentsData } from "@/data/instruments";
+import fondo from "@/public/images/fondo.png";
 
 export default function Home() {
   // Get the featured instruments (first 4)
@@ -16,7 +17,7 @@ export default function Home() {
         <div 
           className="absolute inset-0 z-0 bg-black/50"
           style={{
-            backgroundImage: 'url("https://images.pexels.com/photos/164938/pexels-photo-164938.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2")',
+            backgroundImage: `url(${fondo.src})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundBlendMode: 'overlay',
