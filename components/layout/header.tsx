@@ -15,6 +15,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 const instrumentCategories = [
   {
@@ -35,12 +36,14 @@ const instrumentCategories = [
   {
     title: "Teclados",
     href: "/catalog/teclados",
-    description: "Pianos, Sintetizadores, Acordeones y más instrumentos de teclado.",
+    description:
+      "Pianos, Sintetizadores, Acordeones y más instrumentos de teclado.",
   },
   {
     title: "Electrónicos",
     href: "/catalog/electronicos",
-    description: "Controladores MIDI, Pedales, Interfaces y más equipos electrónicos.",
+    description:
+      "Controladores MIDI, Pedales, Interfaces y más equipos electrónicos.",
   },
 ];
 
@@ -50,9 +53,16 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
-        <div className="mr-4 flex">
+        <div className="mr-4 ml-4 flex">
           <Link href="/" className="flex items-center space-x-2">
-            <img src="public/tiendaCLN.png" alt="Logo" className="h-8" />
+            <Image
+              src="/images/tiendaCLN.png" // Ruta pública de la imagen
+              alt="Logo"
+              height={50} // Ajusta el tamaño
+              width={100}
+              layout="intrinsic" 
+              className="h-8"
+            />
             {/* <span className="font-bold text-xl">CLN - Clazoni</span> */}
           </Link>
         </div>
@@ -72,7 +82,9 @@ export default function Header() {
                             href={category.href}
                             className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                           >
-                            <div className="text-sm font-medium leading-none">{category.title}</div>
+                            <div className="text-sm font-medium leading-none">
+                              {category.title}
+                            </div>
                             <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                               {category.description}
                             </p>
@@ -120,7 +132,11 @@ export default function Header() {
             size="icon"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
-            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            {mobileMenuOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <Menu className="h-6 w-6" />
+            )}
           </Button>
         </div>
       </div>
