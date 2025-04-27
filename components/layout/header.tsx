@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import tiendaCLN from "@/public/images/tiendaCLN.png";
 
 const instrumentCategories = [
   {
@@ -56,7 +57,7 @@ export default function Header() {
         <div className="mr-4 ml-4 flex">
           <Link href="/" className="flex items-center space-x-2">
             <Image
-              src="https://github.com/cln-clazoni/shop/blob/main/public/images/tiendaCLN.png" // Ruta pública de la imagen
+              src={tiendaCLN} // Ruta pública de la imagen
               alt="Logo"
               height={50} // Ajusta el tamaño
               width={100}
