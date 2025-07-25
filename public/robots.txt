@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://cln-clazoni.github.io/shop/sitemap.xml
