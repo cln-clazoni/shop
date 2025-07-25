@@ -89,7 +89,7 @@ export default async function CatalogPage() {
                   <div className="flex justify-between items-center mb-3">
                     <span className="text-sm">Color: {instrument.color}</span>
                     <Link
-                      href={`https://wa.me/59578859999?text=${encodeURIComponent(
+                      href={`https://wa.me/59178859999?text=${encodeURIComponent(
                         `Me interesa comprar ${instrument.name}, me envia el precio y formas de pago.`
                       )}`}
                       target="_blank"

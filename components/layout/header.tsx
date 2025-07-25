@@ -14,6 +14,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import tiendaCLN from "@/public/images/tiendaCLN.png";
@@ -47,7 +48,7 @@ export default function Header({ instrumentCategories }: HeaderProps) {
         <div className="hidden md:flex flex-1 items-center justify-between">
           <NavigationMenu>
             <NavigationMenuList>
-              <NavigationMenuItem>
+              <NavigationMenuItem className="border-r border-black">
                 <NavigationMenuTrigger>Instrumentos</NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
@@ -71,14 +72,14 @@ export default function Header({ instrumentCategories }: HeaderProps) {
                   </ul>
                 </NavigationMenuContent>
               </NavigationMenuItem>
-              <NavigationMenuItem>
+              <NavigationMenuItem className="border-r border-black">
                 <Link href="/catalog" legacyBehavior passHref>
                   <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                     Catálogo Completo
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
-              <NavigationMenuItem>
+              <NavigationMenuItem className="border-r border-black">
                 <Link href="/contact" legacyBehavior passHref>
                   <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                     Contacto
@@ -123,7 +124,7 @@ export default function Header({ instrumentCategories }: HeaderProps) {
           <div className="space-y-1 px-4 py-3">
             <Link
               href="/catalog"
-              className="block rounded-md px-3 py-2 text-base font-medium hover:bg-accent hover:text-accent-foreground"
+              className="block px-3 py-2 text-base font-medium hover:bg-gray-200 dark:hover:bg-gray-700"
               onClick={() => setMobileMenuOpen(false)}
             >
               Catálogo Completo
@@ -132,7 +133,7 @@ export default function Header({ instrumentCategories }: HeaderProps) {
               <Link
                 key={category.id}
                 href={`/catalog/${category.id_property}`}
-                className="block rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground"
+                className="block px-3 py-2 text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {category.name_complete}
@@ -140,14 +141,14 @@ export default function Header({ instrumentCategories }: HeaderProps) {
             ))}
             <Link
               href="/contact"
-              className="block rounded-md px-3 py-2 text-base font-medium hover:bg-accent hover:text-accent-foreground"
+              className="block px-3 py-2 text-base font-medium hover:bg-gray-200 dark:hover:bg-gray-700"
               onClick={() => setMobileMenuOpen(false)}
             >
               Contacto
             </Link>
             <Link
               href="/location"
-              className="block rounded-md px-3 py-2 text-base font-medium hover:bg-accent hover:text-accent-foreground"
+              className="block px-3 py-2 text-base font-medium hover:bg-gray-200 dark:hover:bg-gray-700"
               onClick={() => setMobileMenuOpen(false)}
             >
               Ubicación

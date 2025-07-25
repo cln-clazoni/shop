@@ -140,7 +140,7 @@ export default async function InstrumentPage({ params }: InstrumentPageProps) {
               size="lg"
             >
               <a
-                href={`https://wa.me/59578859999?text=${encodeURIComponent(
+                href={`https://wa.me/59178859999?text=${encodeURIComponent(
                   `Me interesa comprar ${instrument.name}, me envia el precio y formas de pago.`
                 )}`}
                 target="_blank"
@@ -193,7 +193,7 @@ export default async function InstrumentPage({ params }: InstrumentPageProps) {
                       Ver detalles
                     </Link>
                     <Link
-                      href={`https://wa.me/59578859999?text=${encodeURIComponent(
+                      href={`https://wa.me/59178859999?text=${encodeURIComponent(
                         `Me interesa comprar ${instrument.name}, me envia el precio y formas de pago.`
                       )}`}
                       target="_blank"

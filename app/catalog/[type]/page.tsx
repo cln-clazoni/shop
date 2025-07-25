@@ -123,7 +123,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                       Ver detalles
                     </Link>
                     <Link
-                      href={`https://wa.me/59578859999?text=${encodeURIComponent(
+                      href={`https://wa.me/59178859999?text=${encodeURIComponent(
                         `Me interesa comprar ${instrument.name}, me envia el precio y formas de pago.`
                       )}`}
                       target="_blank"

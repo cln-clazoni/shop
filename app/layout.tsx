@@ -1,17 +1,78 @@
-import './globals.css';
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import { ThemeProvider } from '@/components/theme-provider';
-import Header from '@/components/layout/header';
-import Footer from '@/components/layout/footer';
-import { getInstrumentsTypes } from '@/lib/data';
+import "./globals.css";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import { ThemeProvider } from "@/components/theme-provider";
+import Header from "@/components/layout/header";
+import Footer from "@/components/layout/footer";
+import { getInstrumentsTypes } from "@/lib/data";
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: 'CLN - Clazoni - Tienda de Instrumentos Musicales',
-  description: 'Encuentra los mejores instrumentos musicales para tu vida.',
+export const metadata = {
+  title: 'CLN – Clazoni | Tienda de Instrumentos Musicales en Bolivia',
+  description:
+    'Descubre guitarras, teclados, baterías y más en CLN Clazoni. Tu tienda de instrumentos musicales en Bolivia con envíos a todo el país.',
+  keywords: [
+    'instrumentos musicales',
+    'guitarras Bolivia',
+    'tienda instrumentos musicales',
+    'pianos digitales',
+    'baterías musicales',
+    'tienda musical online',
+    'Clazoni',
+    'CLN',
+    'instrumentos La Paz',
+  ],
+  metadataBase: new URL('https://cln-clazoni.github.io'),
+  alternates: {
+    canonical: 'https://cln-clazoni.github.io/shop/',
+  },
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/images/tiendaCLN.png',
+  },
+  openGraph: {
+    title: 'CLN – Clazoni | Instrumentos Musicales en Bolivia',
+    description:
+      'Explora guitarras, teclados, baterías, vientos y más. Compra online y recibe en todo Bolivia.',
+    url: 'https://cln-clazoni.github.io/shop/',
+    siteName: 'CLN – Clazoni',
+    type: 'website',
+    locale: 'es_BO',
+    images: [
+      {
+        url: 'https://cln-clazoni.github.io/shop/images/tiendaCLN.png',
+        width: 1200,
+        height: 630,
+        alt: 'CLN – Clazoni tienda de instrumentos musicales',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'CLN – Clazoni | Instrumentos Musicales en Bolivia',
+    description:
+      'Tienda de instrumentos musicales en línea. Guitarras, pianos, vientos, baterías y más.',
+    images: ['https://cln-clazoni.github.io/shop/images/tiendaCLN.png'],
+    site: '@clazonimusic', // opcional si tienes cuenta X (Twitter)
+  },
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+    googleBot: {
+      index: true,
+      follow: true,
+      noimageindex: false,
+      maxSnippet: -1,
+      maxImagePreview: 'large',
+      maxVideoPreview: -1,
+    },
+  },
+  category: 'Instrumentos Musicales, Tienda Online, Música, Bolivia',
 };
+
 
 export default async function RootLayout({
   children,
