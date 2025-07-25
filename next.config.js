@@ -1,6 +1,11 @@
+const isProd = process.env.NEXT_PUBLIC_ENV === "production";
+const repo = process.env.NEXT_PUBLIC_BASE_PATH;
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
+  output: "export",
+  basePath: isProd ? repo : "",
+  assetPrefix: isProd ? repo : "",
   eslint: {
     ignoreDuringBuilds: true,
   },
