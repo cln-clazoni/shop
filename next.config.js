@@ -3,7 +3,6 @@ const repo = process.env.NEXT_PUBLIC_BASE_PATH;
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: "export",
   basePath: isProd ? repo : "",
   assetPrefix: isProd ? repo : "",
   eslint: {

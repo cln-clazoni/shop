@@ -86,10 +86,17 @@ export default function Header({ instrumentCategories }: HeaderProps) {
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
-              <NavigationMenuItem>
+              <NavigationMenuItem className="border-r border-black">
                 <Link href="/location" legacyBehavior passHref>
                   <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                     Ubicación
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <Link href="/comunidad" legacyBehavior passHref>
+                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                    Comunidad
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
