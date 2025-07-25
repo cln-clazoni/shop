@@ -8,6 +8,9 @@ import { getInstrumentsTypes } from "@/lib/data";
 
 const inter = Inter({ subsets: ["latin"] });
 
+const isProd = process.env.NEXT_PUBLIC_ENV === 'production';
+const basePath = isProd ? process.env.NEXT_PUBLIC_BASE_PATH || '' : '';
+
 export const metadata = {
   title: 'CLN – Clazoni | Tienda de Instrumentos Musicales en Bolivia',
   description:
@@ -28,9 +31,9 @@ export const metadata = {
     canonical: 'https://cln-clazoni.github.io/shop/',
   },
   icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon.ico',
-    apple: '/images/tiendaCLN.png',
+    icon: `${basePath}/favicon.ico`,
+    shortcut: `${basePath}/favicon.ico`,
+    apple: `${basePath}/images/tiendaCLN.png`,
   },
   openGraph: {
     title: 'CLN – Clazoni | Instrumentos Musicales en Bolivia',
