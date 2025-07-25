@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Facebook, Instagram, Twitter, Youtube, Mail, Phone, MapPin } from "lucide-react";
+import { Facebook, Instagram, Twitter, Youtube, Mail, Phone, MapPin, Music } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -23,6 +23,9 @@ export default function Footer() {
               </Link>
               <Link href="#" className="hover:text-[#F2B90F] transition-colors">
                 <Youtube size={20} />
+              </Link>
+              <Link href="https://www.tiktok.com/@clazoni_cln" target="_blank" rel="noopener noreferrer" className="hover:text-[#F2B90F] transition-colors">
+                <Music size={20} />
               </Link>
             </div>
           </div>
@@ -81,6 +84,11 @@ export default function Footer() {
                   Ubicación
                 </Link>
               </li>
+              <li>
+                <Link href="/#tiktok" className="hover:text-[#F2B90F] transition-colors">
+                  TikTok
+                </Link>
+              </li>
             </ul>
           </div>
           
@@ -89,15 +97,15 @@ export default function Footer() {
             <ul className="space-y-2 text-sm">
               <li className="flex items-center">
                 <Phone size={16} className="mr-2" />
-                <span>+52 55 1234 5678</span>
+                <span>+591 78859999</span>
               </li>
               <li className="flex items-center">
                 <Mail size={16} className="mr-2" />
-                <span>info@musichub.com</span>
+                <span>tiendaclazoni@gmail.com</span>
               </li>
               <li className="flex items-center">
                 <MapPin size={16} className="mr-2" />
-                <span>Av. Insurgentes Sur 1234, CDMX</span>
+                <span>#350 Av. Naciones Unidas, La Paz</span>
               </li>
             </ul>
           </div>

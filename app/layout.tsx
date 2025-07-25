@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
+import { getInstrumentsTypes } from '@/lib/data';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -12,17 +13,19 @@ export const metadata: Metadata = {
   description: 'Encuentra los mejores instrumentos musicales para tu vida.',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const instrumentTypes = await getInstrumentsTypes();
+
   return (
     <html lang="es" suppressHydrationWarning>
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="flex flex-col min-h-screen">
-            <Header />
+            <Header instrumentCategories={instrumentTypes} />
             <main className="flex-1">{children}</main>
             <Footer />
           </div>

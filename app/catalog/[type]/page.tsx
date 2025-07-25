@@ -5,8 +5,11 @@ import { notFound } from "next/navigation";
 import { Download, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { instrumentsData } from "@/data/instruments";
-import { instrumentTypes } from "@/data/types";
+import {
+  getInstruments,
+  getInstrumentsBrand,
+  getInstrumentsTypes,
+} from "@/lib/data";
 import CatalogFilter from "@/components/catalog/catalog-filter";
 
 interface CategoryPageProps {
@@ -16,31 +19,36 @@ interface CategoryPageProps {
 }
 
 export async function generateStaticParams() {
+  const instrumentTypes = await getInstrumentsTypes();
+  console.log("Generating static params for categories:", instrumentTypes);
   return instrumentTypes.map((type) => ({
-    type: type.id,
+    type: type.id_property,
   }));
 }
 
-export default function CategoryPage({ params }: CategoryPageProps) {
+export default async function CategoryPage({ params }: CategoryPageProps) {
   const { type } = params;
-  
+  const instrumentTypes = await getInstrumentsTypes();
+  const instrumentBrands = await getInstrumentsBrand();
+
   // Check if the category exists
-  const category = instrumentTypes.find((t) => t.id === type);
+  const category = instrumentTypes.find((t) => t.id_property === type);
   if (!category) {
     notFound();
   }
-  
+
   // Filter instruments by type
-  const instruments = instrumentsData.filter((instrument) => instrument.type === type);
+  const instrumentsData = await getInstruments();
+  const instruments = instrumentsData.filter(
+    (instrument) => instrument.type === category.id
+  );
 
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold mb-2">{category.name}</h1>
-          <p className="text-muted-foreground">
-            {category.description}
-          </p>
+          <h1 className="text-3xl font-bold mb-2">{category.name_complete}</h1>
+          <p className="text-muted-foreground">{category.descripcion}</p>
         </div>
         <Button asChild variant="outline" className="mt-4 md:mt-0">
           <Link href="/api/download-catalog">
@@ -68,8 +76,12 @@ export default function CategoryPage({ params }: CategoryPageProps) {
         <div className="lg:col-span-3">
           {instruments.length === 0 ? (
             <div className="text-center py-12">
-              <h3 className="text-xl font-medium mb-2">No se encontraron instrumentos en esta categoría</h3>
-              <p className="text-muted-foreground mb-4">Intenta buscar en otra categoría o vuelve al catálogo completo</p>
+              <h3 className="text-xl font-medium mb-2">
+                No se encontraron instrumentos en esta categoría
+              </h3>
+              <p className="text-muted-foreground mb-4">
+                Intenta buscar en otra categoría o vuelve al catálogo completo
+              </p>
               <Button asChild>
                 <Link href="/catalog">Ver todo el catálogo</Link>
               </Button>
@@ -88,21 +100,37 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                     />
                   </div>
                   <CardContent className="p-4">
-                    <h3 className="font-semibold text-lg mb-1">{instrument.name}</h3>
-                    <p className="text-sm text-muted-foreground mb-2">{instrument.brand}</p>
-                    
+                    <h3 className="font-semibold text-lg mb-1">
+                      {instrument.name}
+                    </h3>
+                    <p className="text-sm text-muted-foreground mb-2">
+                      Marca:{" "}
+                      {
+                        instrumentBrands.find(
+                          (brand) => brand.id === instrument.brand
+                        )?.name
+                      }
+                    </p>
+
                     <div className="flex justify-between items-center mb-3">
                       <span className="text-sm">Color: {instrument.color}</span>
-                      <span className="font-semibold text-[#F23827] dark:text-[#F2B90F]">
-                        ${instrument.price.toLocaleString()}
-                      </span>
                     </div>
-                    
-                    <Link 
+
+                    <Link
                       href={`/instrument/${instrument.id}`}
                       className="text-[#0F5FA6] hover:text-[#147346] dark:text-[#F2B90F] dark:hover:text-[#F2A413] text-sm font-medium"
                     >
                       Ver detalles
+                    </Link>
+                    <Link
+                      href={`https://wa.me/59578859999?text=${encodeURIComponent(
+                        `Me interesa comprar ${instrument.name}, me envia el precio y formas de pago.`
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block bg-[#F23827] hover:bg-[#c52c1f] dark:bg-[#F2B90F] dark:hover:bg-[#d8a406] text-white font-semibold py-2 px-4 rounded-xl transition-colors text-sm"
+                    >
+                      Comprar
                     </Link>
                   </CardContent>
                 </Card>

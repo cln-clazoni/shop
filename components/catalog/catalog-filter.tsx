@@ -10,15 +10,10 @@ import {
   AccordionItem,
   AccordionTrigger 
 } from "@/components/ui/accordion";
-
-interface Type {
-  id: string;
-  name: string;
-  description: string;
-}
+import { InstrumentType } from "@/lib/data";
 
 interface CatalogFilterProps {
-  types: Type[];
+  types: InstrumentType[];
 }
 
 export default function CatalogFilter({ types }: CatalogFilterProps) {
@@ -43,7 +38,7 @@ export default function CatalogFilter({ types }: CatalogFilterProps) {
               </div>
             </Link>
             {types.map((type) => (
-              <Link key={type.id} href={`/catalog/${type.id}`}>
+              <Link key={type.id} href={`/catalog/${type.id_property}`}>
                 <div 
                   className={cn(
                     "flex items-center justify-between p-2 rounded-md hover:bg-secondary cursor-pointer",
@@ -51,7 +46,7 @@ export default function CatalogFilter({ types }: CatalogFilterProps) {
                   )}
                   onClick={() => setSelectedType(type.id)}
                 >
-                  <span>{type.name}</span>
+                  <span>{type.name_complete}</span>
                   {selectedType === type.id && <Check className="h-4 w-4" />}
                 </div>
               </Link>

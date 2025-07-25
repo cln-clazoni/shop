@@ -18,9 +18,10 @@ export default function ContactPage() {
                 <Phone className="h-5 w-5 text-white" />
               </div>
               <div>
-                <h3 className="font-medium">Teléfono</h3>
-                <p className="text-muted-foreground">+52 55 1234 5678</p>
-                <p className="text-muted-foreground">+52 55 8765 4321</p>
+                <h3 className="font-medium">Whatsapp</h3>
+                <a href="https://wa.me/59178859999?text=Hola,%20tengo%20una%20consulta%20sobre%20un%20instrumento%20musical." target="_blank" rel="noopener noreferrer"><p className="text-muted-foreground">+591 78859999</p></a>
+                <a href="https://wa.me/59177729222?text=Hola,%20tengo%20una%20consulta%20sobre%20un%20instrumento%20musical." target="_blank" rel="noopener noreferrer"><p className="text-muted-foreground">+591 77729222</p></a>
+                <a href="https://wa.me/59178856666?text=Hola,%20tengo%20una%20consulta%20sobre%20un%20instrumento%20musical." target="_blank" rel="noopener noreferrer"><p className="text-muted-foreground">+591 78856666</p></a>
               </div>
             </div>
             
@@ -30,8 +31,7 @@ export default function ContactPage() {
               </div>
               <div>
                 <h3 className="font-medium">Correo electrónico</h3>
-                <p className="text-muted-foreground">info@musichub.com</p>
-                <p className="text-muted-foreground">ventas@musichub.com</p>
+                <p className="text-muted-foreground">tiendaclazoni@gmail.com</p>
               </div>
             </div>
             
@@ -41,8 +41,7 @@ export default function ContactPage() {
               </div>
               <div>
                 <h3 className="font-medium">Dirección</h3>
-                <p className="text-muted-foreground">Av. Insurgentes Sur 1234,</p>
-                <p className="text-muted-foreground">Col. Del Valle, CDMX, C.P. 03100</p>
+                <p className="text-muted-foreground">#350 Av. Naciones Unidas, La Paz</p>
               </div>
             </div>
             
@@ -53,7 +52,8 @@ export default function ContactPage() {
               <div>
                 <h3 className="font-medium">Horario de atención</h3>
                 <p className="text-muted-foreground">Lunes a Viernes: 9:00 - 19:00</p>
-                <p className="text-muted-foreground">Sábados: 10:00 - 14:00</p>
+                <p className="text-muted-foreground">Sábados: 10:00 - 17:00</p>
+                <p className="text-muted-foreground">Domingos: 10:00 - 17:00</p>
               </div>
             </div>
           </div>

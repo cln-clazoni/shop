@@ -16,7 +16,7 @@ export default function LocationPage() {
         {/* Map */}
         <div className="lg:col-span-2 rounded-lg overflow-hidden h-[400px] lg:h-[500px] relative">
           <iframe 
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3763.494514448966!2d-99.17440042521416!3d19.39590098184497!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d1ff79dbb55fb3%3A0x8fe179d02d6ddb89!2sAv.%20Insurgentes%20Sur%201234%2C%20Tlacoquemecatl%20del%20Valle%2C%20Benito%20Ju%C3%A1rez%2C%2003200%20Ciudad%20de%20M%C3%A9xico%2C%20CDMX%2C%20M%C3%A9xico!5e0!3m2!1ses-419!2smx!4v1687542711489!5m2!1ses-419!2smx" 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d262.42725605585144!2d-68.16108039057228!3d-16.503709041096318!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x915edf9733295d97%3A0x747692d87563583b!2sAv.%20Naciones%20Unidas%20350%2C%20La%20Paz!5e0!3m2!1sen!2sbo!4v1745787298207!5m2!1sen!2sbo" 
             width="100%" 
             height="100%" 
             allowFullScreen
@@ -35,8 +35,7 @@ export default function LocationPage() {
               <MapPin className="h-5 w-5 mt-0.5 mr-3 text-[#F23827] dark:text-[#F2B90F]" />
               <div>
                 <h3 className="font-medium">Dirección</h3>
-                <p className="text-muted-foreground">Av. Insurgentes Sur 1234,</p>
-                <p className="text-muted-foreground">Col. Del Valle, CDMX, C.P. 03100</p>
+                <p className="text-muted-foreground">#350 Av. Naciones Unidas, La Paz</p>
               </div>
             </div>
             
@@ -44,7 +43,7 @@ export default function LocationPage() {
               <Phone className="h-5 w-5 mt-0.5 mr-3 text-[#F23827] dark:text-[#F2B90F]" />
               <div>
                 <h3 className="font-medium">Teléfono</h3>
-                <p className="text-muted-foreground">+52 55 1234 5678</p>
+                <a href="https://wa.me/59178859999?text=Hola,%20tengo%20una%20consulta%20sobre%20un%20instrumento%20musical." target="_blank" rel="noopener noreferrer"><p className="text-muted-foreground">+591 78859999</p></a>
               </div>
             </div>
             
@@ -52,7 +51,7 @@ export default function LocationPage() {
               <Mail className="h-5 w-5 mt-0.5 mr-3 text-[#F23827] dark:text-[#F2B90F]" />
               <div>
                 <h3 className="font-medium">Correo</h3>
-                <p className="text-muted-foreground">tienda@musichub.com</p>
+                <p className="text-muted-foreground">tiendaclazoni@gmail.com</p>
               </div>
             </div>
             
@@ -63,14 +62,14 @@ export default function LocationPage() {
               <div>
                 <h3 className="font-medium">Horario de Atención</h3>
                 <p className="text-muted-foreground">Lunes a Viernes: 9:00 - 19:00</p>
-                <p className="text-muted-foreground">Sábados: 10:00 - 14:00</p>
-                <p className="text-muted-foreground">Domingos: Cerrado</p>
+                <p className="text-muted-foreground">Sábados: 10:00 - 17:00</p>
+                <p className="text-muted-foreground">Domingos: 10:00 - 17:00</p>
               </div>
             </div>
           </div>
           
           <Button asChild className="mt-auto bg-[#0F5FA6] hover:bg-[#147346]">
-            <a href="https://www.google.com/maps/dir/?api=1&destination=Av.+Insurgentes+Sur+1234,+Del+Valle,+CDMX,+Mexico" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.google.com/maps/dir//-16.503852,-68.161052/@-16.503852,-68.161052,17z?entry=ttu&g_ep=EgoyMDI1MDQyMy4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer">
               <Car className="mr-2 h-5 w-5" />
               Cómo llegar
             </a>

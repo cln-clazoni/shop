@@ -17,38 +17,13 @@ import {
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import tiendaCLN from "@/public/images/tiendaCLN.png";
+import { InstrumentType } from "@/lib/data";
 
-const instrumentCategories = [
-  {
-    title: "Cuerdas",
-    href: "/catalog/cuerdas",
-    description: "Guitarras, Bajos, Violines y más instrumentos de cuerda.",
-  },
-  {
-    title: "Viento",
-    href: "/catalog/viento",
-    description: "Saxofones, Flautas, Trompetas y más instrumentos de viento.",
-  },
-  {
-    title: "Percusión",
-    href: "/catalog/percusion",
-    description: "Baterías, Cajones, Congas y más instrumentos de percusión.",
-  },
-  {
-    title: "Teclados",
-    href: "/catalog/teclados",
-    description:
-      "Pianos, Sintetizadores, Acordeones y más instrumentos de teclado.",
-  },
-  {
-    title: "Electrónicos",
-    href: "/catalog/electronicos",
-    description:
-      "Controladores MIDI, Pedales, Interfaces y más equipos electrónicos.",
-  },
-];
+interface HeaderProps {
+  instrumentCategories: InstrumentType[];
+}
 
-export default function Header() {
+export default function Header({ instrumentCategories }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -59,8 +34,8 @@ export default function Header() {
             <Image
               src={tiendaCLN} // Ruta pública de la imagen
               alt="Logo"
-              height={50} // Ajusta el tamaño
-              width={100}
+              height={15} // Ajusta el tamaño
+              width={65}
               layout="intrinsic" 
               className="h-8"
             />
@@ -77,17 +52,17 @@ export default function Header() {
                 <NavigationMenuContent>
                   <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                     {instrumentCategories.map((category) => (
-                      <li key={category.title}>
+                      <li key={category.id}>
                         <NavigationMenuLink asChild>
                           <Link
-                            href={category.href}
+                            href={`/catalog/${category.id_property}`}
                             className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                           >
                             <div className="text-sm font-medium leading-none">
-                              {category.title}
+                              {category.name_complete}
                             </div>
                             <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                              {category.description}
+                              {category.descripcion}
                             </p>
                           </Link>
                         </NavigationMenuLink>
@@ -155,12 +130,12 @@ export default function Header() {
             </Link>
             {instrumentCategories.map((category) => (
               <Link
-                key={category.title}
-                href={category.href}
+                key={category.id}
+                href={`/catalog/${category.id_property}`}
                 className="block rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                {category.title}
+                {category.name_complete}
               </Link>
             ))}
             <Link
