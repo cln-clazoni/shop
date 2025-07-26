@@ -16,6 +16,19 @@ interface CategoryPageProps {
   };
 }
 
+export async function generateStaticParams() {
+  try {
+    const typesRes = await fetch(
+      "https://n8n-proyect.onrender.com/webhook/cln/instrumentos/tipos"
+    );
+    const types: InstrumentType[] = await typesRes.json();
+    return types.map((category) => ({ type: category.id_property }));
+  } catch (error) {
+    console.error("Failed to generate static params for categories", error);
+    return [];
+  }
+}
+
 export default function CategoryPage({ params }: CategoryPageProps) {
   const { type } = params;
   const [instruments, setInstruments] = useState<Instrument[]>([]);

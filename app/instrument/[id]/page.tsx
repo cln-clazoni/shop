@@ -16,6 +16,19 @@ interface InstrumentPageProps {
   };
 }
 
+export async function generateStaticParams() {
+  try {
+    const instrumentsRes = await fetch(
+      "https://n8n-proyect.onrender.com/webhook/cln/instrumentos"
+    );
+    const instruments: Instrument[] = await instrumentsRes.json();
+    return instruments.map((instrument) => ({ id: instrument.id }));
+  } catch (error) {
+    console.error("Failed to generate static params for instruments", error);
+    return [];
+  }
+}
+
 export default function InstrumentPage({ params }: InstrumentPageProps) {
   const { id } = params;
   const [instrument, setInstrument] = useState<Instrument | null>(null);
