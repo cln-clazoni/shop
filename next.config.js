@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const isProd = process.env.NEXT_PUBLIC_ENV === "production";
 const repo = process.env.NEXT_PUBLIC_BASE_PATH;
 

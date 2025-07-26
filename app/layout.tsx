@@ -1,5 +1,4 @@
 import "./globals.css";
-import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import Header from "@/components/layout/header";
@@ -12,7 +11,7 @@ const isProd = process.env.NEXT_PUBLIC_ENV === 'production';
 const basePath = isProd ? process.env.NEXT_PUBLIC_BASE_PATH || '' : '';
 
 export const metadata = {
-  title: `${process.env.NEXT_PUBLIC_ENV} CLN – Clazoni | Tienda de Instrumentos Musicales en Bolivia`,
+  title: `CLN – Clazoni | Tienda de Instrumentos Musicales en Bolivia`,
   description:
     'Descubre guitarras, teclados, baterías y más en CLN Clazoni. Tu tienda de instrumentos musicales en Bolivia con envíos a todo el país.',
   keywords: [
