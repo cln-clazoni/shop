@@ -160,6 +160,13 @@ export default function Header({ instrumentCategories }: HeaderProps) {
             >
               Ubicación
             </Link>
+            <Link
+              href="/comunidad"
+              className="block px-3 py-2 text-base font-medium hover:bg-gray-200 dark:hover:bg-gray-700"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Comunidad
+            </Link>
           </div>
         </div>
       )}

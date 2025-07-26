@@ -95,9 +95,12 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                       src={instrument.photo}
                       alt={instrument.name}
                       fill
-                      className="object-cover transition-transform group-hover:scale-105"
+                      className="brightness-150 saturate-160 contrast-110 object-contain transition-transform group-hover:scale-105"
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
+                    <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 opacity-0 group-hover:opacity-100 scale-105 transition-opacity h-full">
+                      <p className="text-white text-lg font-bold">CLN</p>
+                    </div>
                   </div>
                   <CardContent className="p-4">
                     <h3 className="font-semibold text-lg mb-1">

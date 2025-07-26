@@ -58,9 +58,12 @@ export default async function CatalogPage() {
                     src={instrument.photo}
                     alt={instrument.name}
                     fill
-                    className="object-cover transition-transform group-hover:scale-105"
+                    className="brightness-150 saturate-160 contrast-110 object-contain transition-transform group-hover:scale-105"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
+                  <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 opacity-0 group-hover:opacity-100 transition-opacity h-full">
+                    <p className="text-white text-lg font-bold">CLN</p>
+                  </div>
                 </div>
                 <CardContent className="p-4">
                   <div className="mb-2">
@@ -90,7 +93,13 @@ export default async function CatalogPage() {
                     <span className="text-sm">Color: {instrument.color}</span>
                     <Link
                       href={`https://wa.me/59178859999?text=${encodeURIComponent(
-                        `Me interesa comprar ${instrument.name}, me envia el precio y formas de pago.`
+                        `Me interesa comprar "${instrument.name}" marca "${
+                          instrumentBrands.find(
+                            (brand) => brand.id === instrument.brand
+                          )?.name
+                        }" color "${
+                          instrument.color.toLowerCase()
+                        }" , me envia el precio y formas de pago.`
                       )}`}
                       target="_blank"
                       rel="noopener noreferrer"

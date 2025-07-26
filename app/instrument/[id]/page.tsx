@@ -77,7 +77,7 @@ export default async function InstrumentPage({ params }: InstrumentPageProps) {
             src={instrument.photo}
             alt={instrument.name}
             fill
-            className="object-cover"
+            className="brightness-150 saturate-160 contrast-110 object-contain"
             sizes="(max-width: 1024px) 100vw, 50vw"
             priority
           />
@@ -171,7 +171,7 @@ export default async function InstrumentPage({ params }: InstrumentPageProps) {
                     src={instrument.photo}
                     alt={instrument.name}
                     fill
-                    className="object-cover transition-transform group-hover:scale-105"
+                    className="brightness-150 saturate-160 contrast-110 object-cover transition-transform group-hover:scale-105"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                 </div>
