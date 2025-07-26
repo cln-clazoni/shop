@@ -1,15 +1,13 @@
-import { Suspense } from "react";
+"use client";
+
+import { Suspense, useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Download, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  Instrument,
-  InstrumentBrand,
-  InstrumentType,
-} from "@/lib/data";
+import { Instrument, InstrumentBrand, InstrumentType } from "@/lib/data";
 import CatalogFilter from "@/components/catalog/catalog-filter";
 
 interface CategoryPageProps {
@@ -18,73 +16,76 @@ interface CategoryPageProps {
   };
 }
 
-export async function generateStaticParams() {
-  const getInstrumentsTypes = async (): Promise<InstrumentType[]> => {
-    const res = await fetch(
-      "https://n8n-proyect.onrender.com/webhook/cln/instrumentos/tipos"
-    );
-    if (!res.ok) {
-      throw new Error("Failed to fetch data");
-    }
-    return res.json();
-  };
-  const instrumentTypes = await getInstrumentsTypes();
-  console.log("Generating static params for categories:", instrumentTypes);
-  return instrumentTypes.map((type) => ({
-    type: type.id_property,
-  }));
-}
-
-export default async function CategoryPage({ params }: CategoryPageProps) {
+export default function CategoryPage({ params }: CategoryPageProps) {
   const { type } = params;
-  const getInstrumentsTypes = async (): Promise<InstrumentType[]> => {
-    const res = await fetch(
-      "https://n8n-proyect.onrender.com/webhook/cln/instrumentos/tipos"
-    );
-    if (!res.ok) {
-      throw new Error("Failed to fetch data");
-    }
-    return res.json();
-  };
-  const instrumentTypes = await getInstrumentsTypes();
-  const getInstrumentsBrand = async (): Promise<InstrumentBrand[]> => {
-    const res = await fetch(
-      "https://n8n-proyect.onrender.com/webhook/cln/instrumentos/marcas"
-    );
-    if (!res.ok) {
-      throw new Error("Failed to fetch data");
-    }
-    return res.json();
-  };
-  const instrumentBrands = await getInstrumentsBrand();
+  const [instruments, setInstruments] = useState<Instrument[]>([]);
+  const [instrumentTypes, setInstrumentTypes] = useState<InstrumentType[]>([]);
+  const [instrumentBrands, setInstrumentBrands] = useState<InstrumentBrand[]>(
+    []
+  );
+  const [loading, setLoading] = useState(true);
 
-  // Check if the category exists
-  const category = instrumentTypes.find((t) => t.id_property === type);
-  if (!category) {
-    notFound();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [instrumentsRes, typesRes, brandsRes] = await Promise.all([
+          fetch("https://n8n-proyect.onrender.com/webhook/cln/instrumentos"),
+          fetch(
+            "https://n8n-proyect.onrender.com/webhook/cln/instrumentos/tipos"
+          ),
+          fetch(
+            "https://n8n-proyect.onrender.com/webhook/cln/instrumentos/marcas"
+          ),
+        ]);
+
+        if (!instrumentsRes.ok || !typesRes.ok || !brandsRes.ok) {
+          throw new Error("Failed to fetch data");
+        }
+
+        const instrumentsData = await instrumentsRes.json();
+        const typesData = await typesRes.json();
+        const brandsData = await brandsRes.json();
+
+        setInstrumentTypes(typesData);
+        setInstrumentBrands(brandsData);
+
+        const category = typesData.find(
+          (t: InstrumentType) => t.id_property === type
+        );
+        if (!category) {
+          notFound();
+        }
+
+        const filteredInstruments = instrumentsData.filter(
+          (instrument: Instrument) => instrument.type === category.id
+        );
+        setInstruments(filteredInstruments);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [type]);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-yellow-500"></div>
+      </div>
+    );
   }
 
-  // Filter instruments by type
-  const getInstruments = async (): Promise<Instrument[]> => {
-    const res = await fetch(
-      "https://n8n-proyect.onrender.com/webhook/cln/instrumentos"
-    );
-    if (!res.ok) {
-      throw new Error("Failed to fetch data");
-    }
-    return res.json();
-  };
-  const instrumentsData = await getInstruments();
-  const instruments = instrumentsData.filter(
-    (instrument) => instrument.type === category.id
-  );
+  const category = instrumentTypes.find((t) => t.id_property === type);
 
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold mb-2">{category.name_complete}</h1>
-          <p className="text-muted-foreground">{category.descripcion}</p>
+          <h1 className="text-3xl font-bold mb-2">{category?.name_complete}</h1>
+          <p className="text-muted-foreground">{category?.descripcion}</p>
         </div>
         <Button asChild variant="outline" className="mt-4 md:mt-0">
           <Link href="/api/download-catalog">
@@ -155,22 +156,28 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                       <span className="text-sm">Color: {instrument.color}</span>
                     </div>
 
-                    <Link
-                      href={`/instrument/${instrument.id}`}
-                      className="text-[#0F5FA6] hover:text-[#147346] dark:text-[#F2B90F] dark:hover:text-[#F2A413] text-sm font-medium"
-                    >
-                      Ver detalles
-                    </Link>
-                    <Link
-                      href={`https://wa.me/59178859999?text=${encodeURIComponent(
-                        `Me interesa comprar ${instrument.name}, me envia el precio y formas de pago.`
-                      )}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-block bg-[#F23827] hover:bg-[#c52c1f] dark:bg-[#F2B90F] dark:hover:bg-[#d8a406] text-white font-semibold py-2 px-4 rounded-xl transition-colors text-sm"
-                    >
-                      Comprar
-                    </Link>
+                    <div className="flex justify-between items-center">
+                      <Link
+                        href={`/instrument/${instrument.id}`}
+                        className="text-[#0F5FA6] hover:text-[#147346] dark:text-[#F2B90F] dark:hover:text-[#F2A413] text-sm font-medium"
+                      >
+                        Ver detalles
+                      </Link>
+                      <Link
+                        href={`https://wa.me/59178859999?text=${encodeURIComponent(
+                          `Me interesa comprar "${instrument.name}" de marca "${
+                            instrumentBrands.find(
+                              (brand) => brand.id === instrument.brand
+                            )?.name
+                          }" color "${instrument.color.toLocaleLowerCase()}", me envia el precio y formas de pago.`
+                        )}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-[#F23827] hover:bg-[#c52c1f] dark:bg-[#F2B90F] dark:hover:bg-[#d8a406] text-white font-semibold rounded-xl transition-colors text-sm"
+                      >
+                        Comprar
+                      </Link>
+                    </div>
                   </CardContent>
                 </Card>
               ))}

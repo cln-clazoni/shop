@@ -1,4 +1,6 @@
-import { Suspense } from "react";
+"use client";
+
+import { Suspense, useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Download, Filter } from "lucide-react";
@@ -7,37 +9,55 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Instrument, InstrumentBrand, InstrumentType } from "@/lib/data";
 import CatalogFilter from "@/components/catalog/catalog-filter";
 
-export default async function CatalogPage() {
-  const getInstruments = async (): Promise<Instrument[]> => {
-    const res = await fetch(
-      "https://n8n-proyect.onrender.com/webhook/cln/instrumentos"
+export default function CatalogPage() {
+  const [instrumentsData, setInstrumentsData] = useState<Instrument[]>([]);
+  const [instrumentTypes, setInstrumentTypes] = useState<InstrumentType[]>([]);
+  const [instrumentBrands, setInstrumentBrands] = useState<InstrumentBrand[]>(
+    []
+  );
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [instrumentsRes, typesRes, brandsRes] = await Promise.all([
+          fetch("https://n8n-proyect.onrender.com/webhook/cln/instrumentos"),
+          fetch(
+            "https://n8n-proyect.onrender.com/webhook/cln/instrumentos/tipos"
+          ),
+          fetch(
+            "https://n8n-proyect.onrender.com/webhook/cln/instrumentos/marcas"
+          ),
+        ]);
+
+        if (!instrumentsRes.ok || !typesRes.ok || !brandsRes.ok) {
+          throw new Error("Failed to fetch data");
+        }
+
+        const instruments = await instrumentsRes.json();
+        const types = await typesRes.json();
+        const brands = await brandsRes.json();
+
+        setInstrumentsData(instruments);
+        setInstrumentTypes(types);
+        setInstrumentBrands(brands);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-yellow-500"></div>
+      </div>
     );
-    if (!res.ok) {
-      throw new Error("Failed to fetch data");
-    }
-    return res.json();
-  };
-  const instrumentsData = await getInstruments();
-  const getInstrumentsTypes = async (): Promise<InstrumentType[]> => {
-    const res = await fetch(
-      "https://n8n-proyect.onrender.com/webhook/cln/instrumentos/tipos"
-    );
-    if (!res.ok) {
-      throw new Error("Failed to fetch data");
-    }
-    return res.json();
-  };
-  const instrumentTypes = await getInstrumentsTypes();
-  const getInstrumentsBrand = async (): Promise<InstrumentBrand[]> => {
-    const res = await fetch(
-      "https://n8n-proyect.onrender.com/webhook/cln/instrumentos/marcas"
-    );
-    if (!res.ok) {
-      throw new Error("Failed to fetch data");
-    }
-    return res.json();
-  };
-  const instrumentBrands = await getInstrumentsBrand();
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -120,9 +140,7 @@ export default async function CatalogPage() {
                           instrumentBrands.find(
                             (brand) => brand.id === instrument.brand
                           )?.name
-                        }" color "${
-                          instrument.color.toLowerCase()
-                        }" , me envia el precio y formas de pago.`
+                        }" color "${instrument.color.toLowerCase()}" , me envia el precio y formas de pago.`
                       )}`}
                       target="_blank"
                       rel="noopener noreferrer"

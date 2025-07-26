@@ -1,16 +1,14 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Download, Box } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import {
-  Instrument,
-  InstrumentBrand,
-  InstrumentType,
-} from "@/lib/data";
+import { Instrument, InstrumentBrand, InstrumentType } from "@/lib/data";
 
 interface InstrumentPageProps {
   params: {
@@ -18,72 +16,81 @@ interface InstrumentPageProps {
   };
 }
 
-export async function generateStaticParams() {
-  const getInstruments = async (): Promise<Instrument[]> => {
-    const res = await fetch(
-      "https://n8n-proyect.onrender.com/webhook/cln/instrumentos"
-    );
-    if (!res.ok) {
-      throw new Error("Failed to fetch data");
-    }
-    return res.json();
-  };
-  const instruments = await getInstruments();
-  return instruments.map((instrument) => ({
-    id: instrument.id,
-  }));
-}
-
-export default async function InstrumentPage({ params }: InstrumentPageProps) {
+export default function InstrumentPage({ params }: InstrumentPageProps) {
   const { id } = params;
-  const getInstruments = async (): Promise<Instrument[]> => {
-    const res = await fetch(
-      "https://n8n-proyect.onrender.com/webhook/cln/instrumentos"
-    );
-    if (!res.ok) {
-      throw new Error("Failed to fetch data");
-    }
-    return res.json();
-  };
-  const instruments = await getInstruments();
-  const getInstrumentsTypes = async (): Promise<InstrumentType[]> => {
-    const res = await fetch(
-      "https://n8n-proyect.onrender.com/webhook/cln/instrumentos/tipos"
-    );
-    if (!res.ok) {
-      throw new Error("Failed to fetch data");
-    }
-    return res.json();
-  };
-  const instrumentTypes = await getInstrumentsTypes();
-  const getInstrumentsBrand = async (): Promise<InstrumentBrand[]> => {
-    const res = await fetch(
-      "https://n8n-proyect.onrender.com/webhook/cln/instrumentos/marcas"
-    );
-    if (!res.ok) {
-      throw new Error("Failed to fetch data");
-    }
-    return res.json();
-  };
-  const instrumentBrands = await getInstrumentsBrand();
+  const [instrument, setInstrument] = useState<Instrument | null>(null);
+  const [instrumentBrands, setInstrumentBrands] = useState<InstrumentBrand[]>(
+    []
+  );
+  const [instrumentTypes, setInstrumentTypes] = useState<InstrumentType[]>([]);
+  const [similarInstruments, setSimilarInstruments] = useState<Instrument[]>(
+    []
+  );
+  const [loading, setLoading] = useState(true);
 
-  // Find the instrument
-  const instrument = instruments.find((inst) => inst.id === id);
-  if (!instrument) {
-    notFound();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [instrumentsRes, typesRes, brandsRes] = await Promise.all([
+          fetch("https://n8n-proyect.onrender.com/webhook/cln/instrumentos"),
+          fetch(
+            "https://n8n-proyect.onrender.com/webhook/cln/instrumentos/tipos"
+          ),
+          fetch(
+            "https://n8n-proyect.onrender.com/webhook/cln/instrumentos/marcas"
+          ),
+        ]);
+
+        if (!instrumentsRes.ok || !typesRes.ok || !brandsRes.ok) {
+          throw new Error("Failed to fetch data");
+        }
+
+        const instrumentsData = await instrumentsRes.json();
+        const typesData = await typesRes.json();
+        const brandsData = await brandsRes.json();
+
+        const currentInstrument = instrumentsData.find(
+          (inst: Instrument) => inst.id === id
+        );
+
+        if (!currentInstrument) {
+          notFound();
+        }
+
+        setInstrument(currentInstrument);
+        setInstrumentTypes(typesData);
+        setInstrumentBrands(brandsData);
+
+        const similar = instrumentsData
+          .filter(
+            (inst: Instrument) =>
+              inst.type === currentInstrument.type &&
+              inst.id !== currentInstrument.id
+          )
+          .slice(0, 3);
+        setSimilarInstruments(similar);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [id]);
+
+  if (loading || !instrument) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-yellow-500"></div>
+      </div>
+    );
   }
 
   const brandName = instrumentBrands.find(
     (brand) => brand.id === instrument.brand
   )?.name;
   const type = instrumentTypes.find((type) => type.id === instrument.type);
-
-  // Find similar instruments (same type, excluding current)
-  const similarInstruments = instruments
-    .filter(
-      (inst) => inst.type === instrument.type && inst.id !== instrument.id
-    )
-    .slice(0, 3);
 
   return (
     <div className="container mx-auto px-4 py-8">
