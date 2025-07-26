@@ -4,16 +4,39 @@ import Image from "next/image";
 import { Download, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  getInstruments,
-  getInstrumentsBrand,
-  getInstrumentsTypes,
-} from "@/lib/data";
+import { Instrument, InstrumentBrand, InstrumentType } from "@/lib/data";
 import CatalogFilter from "@/components/catalog/catalog-filter";
 
 export default async function CatalogPage() {
+  const getInstruments = async (): Promise<Instrument[]> => {
+    const res = await fetch(
+      "https://n8n-proyect.onrender.com/webhook/cln/instrumentos"
+    );
+    if (!res.ok) {
+      throw new Error("Failed to fetch data");
+    }
+    return res.json();
+  };
   const instrumentsData = await getInstruments();
+  const getInstrumentsTypes = async (): Promise<InstrumentType[]> => {
+    const res = await fetch(
+      "https://n8n-proyect.onrender.com/webhook/cln/instrumentos/tipos"
+    );
+    if (!res.ok) {
+      throw new Error("Failed to fetch data");
+    }
+    return res.json();
+  };
   const instrumentTypes = await getInstrumentsTypes();
+  const getInstrumentsBrand = async (): Promise<InstrumentBrand[]> => {
+    const res = await fetch(
+      "https://n8n-proyect.onrender.com/webhook/cln/instrumentos/marcas"
+    );
+    if (!res.ok) {
+      throw new Error("Failed to fetch data");
+    }
+    return res.json();
+  };
   const instrumentBrands = await getInstrumentsBrand();
 
   return (

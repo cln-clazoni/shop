@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
-import { getInstrumentsTypes } from "@/lib/data";
+import { InstrumentType } from "@/lib/data";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -81,6 +81,15 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const getInstrumentsTypes = async (): Promise<InstrumentType[]> => {
+    const res = await fetch(
+      "https://n8n-proyect.onrender.com/webhook/cln/instrumentos/tipos"
+    );
+    if (!res.ok) {
+      throw new Error("Failed to fetch data");
+    }
+    return res.json();
+  };
   const instrumentTypes = await getInstrumentsTypes();
 
   return (

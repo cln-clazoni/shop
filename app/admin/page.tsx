@@ -1,10 +1,39 @@
-import { getInstruments, getInstrumentsTypes, getInstrumentsBrand } from '@/lib/data';
 import AdminTable from '@/components/admin/admin-table';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { LogoutButton } from '@/components/admin/logout-button';
+import { Instrument, InstrumentBrand, InstrumentType } from '@/lib/data';
 
 export default async function AdminPage() {
+  const getInstruments = async (): Promise<Instrument[]> => {
+    const res = await fetch(
+      "https://n8n-proyect.onrender.com/webhook/cln/instrumentos"
+    );
+    if (!res.ok) {
+      throw new Error("Failed to fetch data");
+    }
+    return res.json();
+  };
+
+  const getInstrumentsTypes = async (): Promise<InstrumentType[]> => {
+    const res = await fetch(
+      "https://n8n-proyect.onrender.com/webhook/cln/instrumentos/tipos"
+    );
+    if (!res.ok) {
+      throw new Error("Failed to fetch data");
+    }
+    return res.json();
+  };
+
+  const getInstrumentsBrand = async (): Promise<InstrumentBrand[]> => {
+    const res = await fetch(
+      "https://n8n-proyect.onrender.com/webhook/cln/instrumentos/marcas"
+    );
+    if (!res.ok) {
+      throw new Error("Failed to fetch data");
+    }
+    return res.json();
+  };
+
   const instruments = await getInstruments();
   const types = await getInstrumentsTypes();
   const brands = await getInstrumentsBrand();

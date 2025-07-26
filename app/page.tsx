@@ -4,17 +4,44 @@ import { ArrowRight, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
-  getInstruments,
-  getInstrumentsBrand,
-  getInstrumentsTypes,
+  Instrument,
+  InstrumentBrand,
+  InstrumentType,
 } from "@/lib/data";
 import fondo from "@/public/images/fondo.png";
 import TikTokSection from "@/components/tiktok/TiktokSection";
 
 export default async function Home() {
   // Get the featured instruments (first 4)
+  const getInstruments = async (): Promise<Instrument[]> => {
+    const res = await fetch(
+      "https://n8n-proyect.onrender.com/webhook/cln/instrumentos"
+    );
+    if (!res.ok) {
+      throw new Error("Failed to fetch data");
+    }
+    return res.json();
+  };
   const instrumentsData = await getInstruments();
+  const getInstrumentsBrand = async (): Promise<InstrumentBrand[]> => {
+    const res = await fetch(
+      "https://n8n-proyect.onrender.com/webhook/cln/instrumentos/marcas"
+    );
+    if (!res.ok) {
+      throw new Error("Failed to fetch data");
+    }
+    return res.json();
+  };
   const instrumentBrands = await getInstrumentsBrand();
+  const getInstrumentsTypes = async (): Promise<InstrumentType[]> => {
+    const res = await fetch(
+      "https://n8n-proyect.onrender.com/webhook/cln/instrumentos/tipos"
+    );
+    if (!res.ok) {
+      throw new Error("Failed to fetch data");
+    }
+    return res.json();
+  };
   const instrumentTypes = await getInstrumentsTypes();
   const featuredInstruments = instrumentsData.slice(0, 4);
 
