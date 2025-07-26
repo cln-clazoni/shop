@@ -17,7 +17,6 @@ export interface InstrumentBrand {
 export async function getInstruments(): Promise<Instrument[]> {
   const res = await fetch(
     "https://n8n-proyect.onrender.com/webhook/cln/instrumentos",
-    { cache: "no-store" }
   );
   if (!res.ok) {
     throw new Error("Failed to fetch data");
@@ -28,7 +27,6 @@ export async function getInstruments(): Promise<Instrument[]> {
 export async function getInstrumentsTypes(): Promise<InstrumentType[]> {
   const res = await fetch(
     "https://n8n-proyect.onrender.com/webhook/cln/instrumentos/tipos",
-    { cache: "no-store" }
   );
   if (!res.ok) {
     throw new Error("Failed to fetch data");
@@ -39,7 +37,6 @@ export async function getInstrumentsTypes(): Promise<InstrumentType[]> {
 export async function getInstrumentsBrand(): Promise<InstrumentBrand[]> {
   const res = await fetch(
     "https://n8n-proyect.onrender.com/webhook/cln/instrumentos/marcas",
-    { cache: "no-store" }
   );
   if (!res.ok) {
     throw new Error("Failed to fetch data");
