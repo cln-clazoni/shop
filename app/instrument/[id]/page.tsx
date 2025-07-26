@@ -8,7 +8,13 @@ import { ArrowLeft, Download, Box } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Instrument, InstrumentBrand, InstrumentType } from "@/lib/data";
+import {
+  getInstrumentById,
+  getInstrumentBrands,
+  getInstrumentTypes,
+  getSimilarInstruments,
+} from "@/lib/api";
+import type { Instrument, InstrumentBrand, InstrumentType } from "@/lib/data";
 
 interface InstrumentPageProps {
   params: {
@@ -43,47 +49,32 @@ export default function InstrumentPage({ params }: InstrumentPageProps) {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
-        const [instrumentsRes, typesRes, brandsRes] = await Promise.all([
-          fetch("https://n8n-proyect.onrender.com/webhook/cln/instrumentos"),
-          fetch(
-            "https://n8n-proyect.onrender.com/webhook/cln/instrumentos/tipos"
-          ),
-          fetch(
-            "https://n8n-proyect.onrender.com/webhook/cln/instrumentos/marcas"
-          ),
+        // 1. Obtener solo el instrumento actual, tipos y marcas.
+        const [currentInstrument, typesData, brandsData] = await Promise.all([
+          getInstrumentById(id),
+          getInstrumentTypes(),
+          getInstrumentBrands(),
         ]);
-
-        if (!instrumentsRes.ok || !typesRes.ok || !brandsRes.ok) {
-          throw new Error("Failed to fetch data");
-        }
-
-        const instrumentsData = await instrumentsRes.json();
-        const typesData = await typesRes.json();
-        const brandsData = await brandsRes.json();
-
-        const currentInstrument = instrumentsData.find(
-          (inst: Instrument) => inst.id === id
-        );
-
-        if (!currentInstrument) {
-          notFound();
-        }
 
         setInstrument(currentInstrument);
         setInstrumentTypes(typesData);
         setInstrumentBrands(brandsData);
 
-        const similar = instrumentsData
-          .filter(
-            (inst: Instrument) =>
-              inst.type === currentInstrument.type &&
-              inst.id !== currentInstrument.id
-          )
-          .slice(0, 3);
-        setSimilarInstruments(similar);
+        // 2. Obtener instrumentos similares de forma eficiente.
+        const similarData = await getSimilarInstruments(
+          currentInstrument.type,
+          currentInstrument.id
+        );
+        setSimilarInstruments(similarData);
       } catch (error) {
         console.error(error);
+        // Si el error es un 404, muestra la página de notFound.
+        if (error && typeof error === "object" && "status" in error && error.status === 404) {
+          notFound();
+        }
+        // Aquí podrías establecer un estado de error para mostrar un mensaje al usuario.
       } finally {
         setLoading(false);
       }
