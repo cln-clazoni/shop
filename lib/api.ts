@@ -21,10 +21,43 @@ async function fetchData<T>(endpoint: string): Promise<T> {
   return res.json();
 }
 
-export const getInstruments = () => fetchData<Instrument[]>("/instrumentos");
-export const getInstrumentById = (id: string) => fetchData<Instrument>(`/instrumentos/${id}`);
-export const getInstrumentTypes = () => fetchData<InstrumentType[]>("/instrumentos/tipos");
-export const getInstrumentBrands = () => fetchData<InstrumentBrand[]>("/instrumentos/marcas");
+export const getInstruments = async (type?: string, brand?: string, limit?: number) => {
+  let instruments = await fetchData<Instrument[]>("/instrumentos");
+  if (type) {
+    instruments = instruments.filter(instrument => instrument.type === type);
+  }
+  if (brand) {
+    instruments = instruments.filter(instrument => instrument.brand === brand);
+  }
+  if (limit) {
+    instruments = instruments.slice(0, limit);
+  }
+  return instruments;
+};
 
-export const getSimilarInstruments = (typeId: string, excludeId: string, limit: number = 3) =>
-  fetchData<Instrument[]>(`/instrumentos?tipo=${typeId}&id_ne=${excludeId}&limit=${limit}`);
+export const getInstrumentById = async (id: string) => {
+  const instruments = await fetchData<Instrument[]>("/instrumentos");
+  return instruments.find(instrument => instrument.id === id);
+};
+
+export const getInstrumentTypes = async (limit?: number) => {
+  let types = await fetchData<InstrumentType[]>("/instrumentos/tipos");
+  if (limit) {
+    types = types.slice(0, limit);
+  }
+  return types;
+};
+
+export const getInstrumentBrands = async (limit?: number) => {
+  let brands = await fetchData<InstrumentBrand[]>("/instrumentos/marcas");
+  if (limit) {
+    brands = brands.slice(0, limit);
+  }
+  return brands;
+};
+
+export const getSimilarInstruments = async (typeId: string, excludeId: string, limit: number = 3) => {
+  let instruments = await fetchData<Instrument[]>("/instrumentos");
+  instruments = instruments.filter(instrument => instrument.type === typeId && instrument.id !== excludeId);
+  return instruments.slice(0, limit);
+};
