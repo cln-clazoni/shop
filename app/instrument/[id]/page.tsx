@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -21,59 +21,44 @@ interface InstrumentPageProps {
   };
 }
 
-export async function generateStaticParams() {
-  try {
-    const instrumentsRes = await fetch(
-      "https://n8n-proyect.onrender.com/webhook/cln/instrumentos"
-    );
-    const instruments: Instrument[] = await instrumentsRes.json();
-    return instruments.map((instrument) => ({ id: instrument.id }));
-  } catch (error) {
-    console.error("Failed to generate static params for instruments", error);
-    return [];
-  }
-}
-
 export default function InstrumentPage({ params }: InstrumentPageProps) {
   const { id } = params;
   const [instrument, setInstrument] = useState<Instrument | null>(null);
-  const [instrumentBrands, setInstrumentBrands] = useState<InstrumentBrand[]>(
-    []
-  );
   const [instrumentTypes, setInstrumentTypes] = useState<InstrumentType[]>([]);
-  const [similarInstruments, setSimilarInstruments] = useState<Instrument[]>(
-    []
-  );
+  const [instrumentBrands, setInstrumentBrands] = useState<InstrumentBrand[]>([]);
+  const [similarInstruments, setSimilarInstruments] = useState<Instrument[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
+      setError(null);
       try {
-        // 1. Obtener solo el instrumento actual, tipos y marcas.
-        const [currentInstrument, typesData, brandsData] = await Promise.all([
+        const [fetchedInstrument, fetchedTypes, fetchedBrands] = await Promise.all([
           getInstrumentById(id),
           getInstrumentTypes(),
           getInstrumentBrands(),
         ]);
 
-        setInstrument(currentInstrument);
-        setInstrumentTypes(typesData);
-        setInstrumentBrands(brandsData);
-
-        // 2. Obtener instrumentos similares de forma eficiente.
-        const similarData = await getSimilarInstruments(
-          currentInstrument.type,
-          currentInstrument.id
-        );
-        setSimilarInstruments(similarData);
-      } catch (error) {
-        console.error(error);
-        // Si el error es un 404, muestra la página de notFound.
-        if (error && typeof error === "object" && "status" in error && error.status === 404) {
+        if (!fetchedInstrument) {
           notFound();
+          return;
         }
-        // Aquí podrías establecer un estado de error para mostrar un mensaje al usuario.
+
+        setInstrument(fetchedInstrument);
+        setInstrumentTypes(fetchedTypes);
+        setInstrumentBrands(fetchedBrands);
+
+        const fetchedSimilarInstruments = await getSimilarInstruments(
+          fetchedInstrument.type,
+          fetchedInstrument.id
+        );
+        setSimilarInstruments(fetchedSimilarInstruments);
+      } catch (err) {
+        console.error("Error fetching data:", err);
+        setError(err as Error);
+        notFound(); // Or handle error display more gracefully
       } finally {
         setLoading(false);
       }
@@ -82,12 +67,25 @@ export default function InstrumentPage({ params }: InstrumentPageProps) {
     fetchData();
   }, [id]);
 
-  if (loading || !instrument) {
+  if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-yellow-500"></div>
+      <div className="container mx-auto px-4 py-8 text-center">
+        Cargando instrumento...
       </div>
     );
+  }
+
+  if (error) {
+    return (
+      <div className="container mx-auto px-4 py-8 text-center text-red-500">
+        Error al cargar el instrumento. Por favor, intente de nuevo más tarde.
+      </div>
+    );
+  }
+
+  if (!instrument) {
+    notFound();
+    return null; // Should not be reached due to notFound() above, but for type safety
   }
 
   const brandName = instrumentBrands.find(

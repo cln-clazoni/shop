@@ -1,12 +1,19 @@
 "use client";
 
-import { Suspense, useState, useEffect } from "react";
+"use client";
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Download, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Instrument, InstrumentBrand, InstrumentType } from "@/lib/data";
+import {
+  getInstruments,
+  getInstrumentTypes,
+  getInstrumentBrands,
+} from "@/lib/api";
 import CatalogFilter from "@/components/catalog/catalog-filter";
 
 export default function CatalogPage() {
@@ -16,33 +23,25 @@ export default function CatalogPage() {
     []
   );
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
+      setError(null);
       try {
-        const [instrumentsRes, typesRes, brandsRes] = await Promise.all([
-          fetch("https://n8n-proyect.onrender.com/webhook/cln/instrumentos"),
-          fetch(
-            "https://n8n-proyect.onrender.com/webhook/cln/instrumentos/tipos"
-          ),
-          fetch(
-            "https://n8n-proyect.onrender.com/webhook/cln/instrumentos/marcas"
-          ),
+        const [instruments, types, brands] = await Promise.all([
+          getInstruments(),
+          getInstrumentTypes(),
+          getInstrumentBrands(),
         ]);
-
-        if (!instrumentsRes.ok || !typesRes.ok || !brandsRes.ok) {
-          throw new Error("Failed to fetch data");
-        }
-
-        const instruments = await instrumentsRes.json();
-        const types = await typesRes.json();
-        const brands = await brandsRes.json();
 
         setInstrumentsData(instruments);
         setInstrumentTypes(types);
         setInstrumentBrands(brands);
-      } catch (error) {
-        console.error(error);
+      } catch (err) {
+        console.error("Error fetching data:", err);
+        setError(err as Error);
       } finally {
         setLoading(false);
       }
@@ -55,6 +54,14 @@ export default function CatalogPage() {
     return (
       <div className="flex items-center justify-center h-screen">
         <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-yellow-500"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="container mx-auto px-4 py-8 text-center text-red-500">
+        Error al cargar el catálogo. Por favor, intente de nuevo más tarde.
       </div>
     );
   }
@@ -85,9 +92,7 @@ export default function CatalogPage() {
               <Filter className="h-5 w-5 mr-2" />
               <h2 className="text-xl font-semibold">Filtros</h2>
             </div>
-            <Suspense fallback={<div>Cargando filtros...</div>}>
-              <CatalogFilter types={instrumentTypes} />
-            </Suspense>
+            <CatalogFilter types={instrumentTypes} />
           </div>
         </div>
 
