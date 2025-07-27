@@ -11,7 +11,7 @@ const isProd = process.env.NEXT_PUBLIC_ENV === 'production';
 const basePath = isProd ? process.env.NEXT_PUBLIC_BASE_PATH || '' : '';
 
 export const metadata = {
-  title: `CLN – Clazoni | Tienda de Instrumentos Musicales en Bolivia`,
+  title: `${process.env.JWT_SECRET} CLN – Clazoni | Tienda de Instrumentos Musicales en Bolivia`,
   description:
     'Descubre guitarras, teclados, baterías y más en CLN Clazoni. Tu tienda de instrumentos musicales en Bolivia con envíos a todo el país.',
   keywords: [
