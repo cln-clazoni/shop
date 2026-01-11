@@ -86,7 +86,7 @@ export default function AdminTable({
                 <TableCell>{instrument.price}</TableCell>
                 <TableCell>{instrument.accessories.join(", ")}</TableCell>
                 <TableCell><img src={instrument.photo} alt={instrument.name} className="w-16 h-16 object-cover" /></TableCell>
-                <TableCell>{instrument.descripcion}</TableCell>
+                <TableCell>{instrument.description}</TableCell>
                 <TableCell>
                   <Dialog>
                     <DialogTrigger asChild>
@@ -128,7 +128,7 @@ export default function AdminTable({
                           </div>
                           <div>
                             <Label htmlFor="description">Descripción</Label>
-                            <Input id="description" defaultValue={selectedInstrument.descripcion} />
+                            <Input id="description" defaultValue={selectedInstrument.description} />
                           </div>
                           <Button>Guardar</Button>
                         </div>
@@ -172,7 +172,7 @@ export default function AdminTable({
             {types.map((type) => (
               <TableRow key={type.id}>
                 <TableCell>{type.name}</TableCell>
-                <TableCell>{type.name_complete}</TableCell>
+                <TableCell>{type.name}</TableCell>
                 <TableCell>{type.descripcion}</TableCell>
                 <TableCell>
                 <Dialog>
@@ -191,7 +191,7 @@ export default function AdminTable({
                           </div>
                           <div>
                             <Label htmlFor="name_complete">Nombre Completo</Label>
-                            <Input id="name_complete" defaultValue={selectedType.name_complete} />
+                            <Input id="name_complete" defaultValue={selectedType.name} />
                           </div>
                           <div>
                             <Label htmlFor="description">Descripción</Label>
@@ -236,7 +236,7 @@ export default function AdminTable({
           <TableBody>
             {brands.map((brand) => (
               <TableRow key={brand.id}>
-                <TableCell>{brand.name}</TableCell>
+                <TableCell>{brand.nombre}</TableCell>
                 <TableCell>
                 <Dialog>
                     <DialogTrigger asChild>
@@ -250,7 +250,7 @@ export default function AdminTable({
                         <div className="space-y-4">
                           <div>
                             <Label htmlFor="name">Nombre</Label>
-                            <Input id="name" defaultValue={selectedBrand.name} />
+                            <Input id="name" defaultValue={selectedBrand.nombre} />
                           </div>
                           <Button>Guardar</Button>
                         </div>
