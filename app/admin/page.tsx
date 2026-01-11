@@ -2,11 +2,12 @@ import AdminTable from '@/components/admin/admin-table';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { LogoutButton } from '@/components/admin/logout-button';
 import { Instrument, InstrumentBrand, InstrumentType } from '@/lib/data';
+import { API_BASE_URL } from '@/lib/api';
 
 export default async function AdminPage() {
   const getInstruments = async (): Promise<Instrument[]> => {
     const res = await fetch(
-      "https://n8n-proyect.onrender.com/webhook/cln/instrumentos"
+      `${API_BASE_URL}/instrumentos`
     );
     if (!res.ok) {
       throw new Error("Failed to fetch data");
@@ -16,7 +17,7 @@ export default async function AdminPage() {
 
   const getInstrumentsTypes = async (): Promise<InstrumentType[]> => {
     const res = await fetch(
-      "https://n8n-proyect.onrender.com/webhook/cln/instrumentos/tipos"
+      `${API_BASE_URL}/tipos`
     );
     if (!res.ok) {
       throw new Error("Failed to fetch data");
@@ -26,7 +27,7 @@ export default async function AdminPage() {
 
   const getInstrumentsBrand = async (): Promise<InstrumentBrand[]> => {
     const res = await fetch(
-      "https://n8n-proyect.onrender.com/webhook/cln/instrumentos/marcas"
+      `${API_BASE_URL}/marcas`
     );
     if (!res.ok) {
       throw new Error("Failed to fetch data");

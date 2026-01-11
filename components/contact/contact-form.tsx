@@ -29,10 +29,7 @@ const contactFormSchema = z.object({
   name: z.string().min(2, {
     message: "El nombre debe tener al menos 2 caracteres.",
   }),
-  email: z.string().email({
-    message: "Por favor ingresa un correo electrónico válido.",
-  }),
-  phone: z.string().min(10, {
+  phone: z.string().min(8, {
     message: "El teléfono debe tener al menos 10 dígitos.",
   }),
   subject: z.string().min(1, {
@@ -48,12 +45,11 @@ type ContactFormValues = z.infer<typeof contactFormSchema>;
 export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
-  
+
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
     defaultValues: {
       name: "",
-      email: "",
       phone: "",
       subject: "",
       message: "",
@@ -62,15 +58,37 @@ export default function ContactForm() {
 
   async function onSubmit(data: ContactFormValues) {
     setIsSubmitting(true);
+
+    const { name, phone, subject, message } = data;
+
+    // 1. Construimos el mensaje con saltos de línea (\n) y formato
+    // Nota: Los asteriscos (*) hacen que el texto se vea en negrita en WhatsApp
+    const whatsappText = `*Hola, tengo una consulta desde la web.*
     
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
+*Nombre:* ${name}
+*Teléfono:* ${phone}
+*Asunto:* ${subject}
+
+*Mensaje:*
+${message}`;
+
+    // 2. Codificamos el mensaje para URL
+    const encodedText = encodeURIComponent(whatsappText);
+
+    // 3. Definimos el número (puedes sacarlo a una constante si prefieres)
+    const phoneNumber = "59178859999";
+
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+
+    window.open(
+      `https://api.whatsapp.com/send/?phone=${phoneNumber}&text=${encodedText}&type=phone_number&app_absent=0`,
+      "_blank"
+    );
     toast({
-      title: "Mensaje enviado",
-      description: "Hemos recibido tu mensaje. Te contactaremos a la brevedad.",
+      title: "Mensaje listo",
+      description: "Te estamos redirigiendo a WhatsApp para enviar el mensaje.",
     });
-    
+
     form.reset();
     setIsSubmitting(false);
   }
@@ -92,22 +110,8 @@ export default function ContactForm() {
               </FormItem>
             )}
           />
-          
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Correo electrónico</FormLabel>
-                <FormControl>
-                  <Input placeholder="tu@email.com" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <FormField
             control={form.control}
@@ -116,21 +120,21 @@ export default function ContactForm() {
               <FormItem>
                 <FormLabel>Teléfono</FormLabel>
                 <FormControl>
-                  <Input placeholder="55 1234 5678" {...field} />
+                  <Input placeholder="78859999" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          
+
           <FormField
             control={form.control}
             name="subject"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Asunto</FormLabel>
-                <Select 
-                  onValueChange={field.onChange} 
+                <Select
+                  onValueChange={field.onChange}
                   defaultValue={field.value}
                 >
                   <FormControl>
@@ -151,7 +155,7 @@ export default function ContactForm() {
             )}
           />
         </div>
-        
+
         <FormField
           control={form.control}
           name="message"
@@ -159,18 +163,22 @@ export default function ContactForm() {
             <FormItem>
               <FormLabel>Mensaje</FormLabel>
               <FormControl>
-                <Textarea 
-                  placeholder="Escribe tu mensaje aquí..." 
+                <Textarea
+                  placeholder="Escribe tu mensaje aquí... algo asi como: me interesa el instrumento ..."
                   className="min-h-[120px]"
-                  {...field} 
+                  {...field}
                 />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        
-        <Button type="submit" disabled={isSubmitting} className="w-full md:w-auto bg-[#0F5FA6] hover:bg-[#147346]">
+
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full md:w-auto bg-[#0F5FA6] hover:bg-[#147346]"
+        >
           {isSubmitting ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />

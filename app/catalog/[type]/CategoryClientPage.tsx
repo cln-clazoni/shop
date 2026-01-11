@@ -14,6 +14,7 @@ import {
   getInstrumentBrands,
 } from "@/lib/api";
 import CatalogFilter from "@/components/catalog/catalog-filter";
+import DownloadCatalogButton from "@/components/catalogo/BotonDescargarCatalogo";
 
 interface CategoryClientPageProps {
   type: string;
@@ -43,7 +44,7 @@ export default function CategoryClientPage({ type }: CategoryClientPageProps) {
         setInstrumentBrands(brandsData);
 
         const category = typesData.find(
-          (t: InstrumentType) => t.id_property === type
+          (t: InstrumentType) => t.id === type
         );
         if (!category) {
           notFound();
@@ -82,7 +83,7 @@ export default function CategoryClientPage({ type }: CategoryClientPageProps) {
     );
   }
 
-  const category = instrumentTypes.find((t) => t.id_property === type);
+  const category = instrumentTypes.find((t) => t.id === type);
 
   if (!category) {
     notFound();
@@ -93,15 +94,10 @@ export default function CategoryClientPage({ type }: CategoryClientPageProps) {
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold mb-2">{category?.name_complete}</h1>
+          <h1 className="text-3xl font-bold mb-2">{category?.name}</h1>
           <p className="text-muted-foreground">{category?.descripcion}</p>
         </div>
-        <Button asChild variant="outline" className="mt-4 md:mt-0">
-          <Link href="/api/download-catalog">
-            <Download className="mr-2 h-4 w-4" />
-            Descargar PDF
-          </Link>
-        </Button>
+        <DownloadCatalogButton />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
@@ -136,10 +132,10 @@ export default function CategoryClientPage({ type }: CategoryClientPageProps) {
                 <Card key={instrument.id} className="overflow-hidden group">
                   <div className="relative h-48">
                     <Image
-                      src={instrument.photo}
+                      src={instrument?.photo ?? ''}
                       alt={instrument.name}
                       fill
-                      className="brightness-150 saturate-160 contrast-110 object-contain transition-transform group-hover:scale-105"
+                      className="object-contain transition-transform group-hover:scale-105"
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
                     <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 opacity-0 group-hover:opacity-100 scale-105 transition-opacity h-full">
@@ -155,7 +151,7 @@ export default function CategoryClientPage({ type }: CategoryClientPageProps) {
                       {
                         instrumentBrands.find(
                           (brand) => brand.id === instrument.brand
-                        )?.name
+                        )?.nombre
                       }
                     </p>
 
@@ -175,12 +171,12 @@ export default function CategoryClientPage({ type }: CategoryClientPageProps) {
                           `Me interesa comprar "${instrument.name}" de marca "${
                             instrumentBrands.find(
                               (brand) => brand.id === instrument.brand
-                            )?.name
+                            )?.nombre
                           }" color "${instrument.color.toLocaleLowerCase()}", me envia el precio y formas de pago.`
                         )}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="bg-[#F23827] hover:bg-[#c52c1f] dark:bg-[#F2B90F] dark:hover:bg-[#d8a406] text-white font-semibold rounded-xl transition-colors text-sm"
+                        className="inline-block bg-[#F23827] hover:bg-[#c52c1f] dark:bg-[#F2B90F] dark:hover:bg-[#d8a406] text-white font-semibold py-2 px-4 rounded-xl transition-colors text-sm"
                       >
                         Comprar
                       </Link>

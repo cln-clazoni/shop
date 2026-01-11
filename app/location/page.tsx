@@ -16,7 +16,7 @@ export default function LocationPage() {
         {/* Map */}
         <div className="lg:col-span-2 rounded-lg overflow-hidden h-[400px] lg:h-[500px] relative">
           <iframe 
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d262.42725605585144!2d-68.16108039057228!3d-16.503709041096318!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x915edf9733295d97%3A0x747692d87563583b!2sAv.%20Naciones%20Unidas%20350%2C%20La%20Paz!5e0!3m2!1sen!2sbo!4v1745787298207!5m2!1sen!2sbo" 
+            src="https://maps.app.goo.gl/oJLRd1PdAN1oSFee8" 
             width="100%" 
             height="100%" 
             allowFullScreen
@@ -69,7 +69,7 @@ export default function LocationPage() {
           </div>
           
           <Button asChild className="mt-auto bg-[#0F5FA6] hover:bg-[#147346]">
-            <a href="https://www.google.com/maps/dir//-16.503852,-68.161052/@-16.503852,-68.161052,17z?entry=ttu&g_ep=EgoyMDI1MDQyMy4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer">
+            <a href="https://maps.app.goo.gl/oJLRd1PdAN1oSFee8" target="_blank" rel="noopener noreferrer">
               <Car className="mr-2 h-5 w-5" />
               Cómo llegar
             </a>

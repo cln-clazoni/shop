@@ -1,6 +1,6 @@
 import { Instrument, InstrumentBrand, InstrumentType } from "@/lib/data";
-
-const API_BASE_URL = "https://n8n-proyect.onrender.com/webhook/cln";
+  
+export const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL + "/api";
 
 /**
  * Función genérica para realizar peticiones fetch y manejar errores comunes.
@@ -41,7 +41,7 @@ export const getInstrumentById = async (id: string) => {
 };
 
 export const getInstrumentTypes = async (limit?: number) => {
-  let types = await fetchData<InstrumentType[]>("/instrumentos/tipos");
+  let types = await fetchData<InstrumentType[]>("/tipos");
   if (limit) {
     types = types.slice(0, limit);
   }
@@ -49,7 +49,7 @@ export const getInstrumentTypes = async (limit?: number) => {
 };
 
 export const getInstrumentBrands = async (limit?: number) => {
-  let brands = await fetchData<InstrumentBrand[]>("/instrumentos/marcas");
+  let brands = await fetchData<InstrumentBrand[]>("/marcas");
   if (limit) {
     brands = brands.slice(0, limit);
   }

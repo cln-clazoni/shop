@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import { InstrumentType } from "@/lib/data";
+import { API_BASE_URL } from "@/lib/api";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -11,7 +12,7 @@ const isProd = process.env.NEXT_PUBLIC_ENV === 'production';
 const basePath = isProd ? process.env.NEXT_PUBLIC_BASE_PATH || '' : '';
 
 export const metadata = {
-  title: `${process.env.JWT_SECRET} CLN – Clazoni | Tienda de Instrumentos Musicales en Bolivia`,
+  title: `CLN – Clazoni | Tienda de Instrumentos Musicales en Bolivia`,
   description:
     'Descubre guitarras, teclados, baterías y más en CLN Clazoni. Tu tienda de instrumentos musicales en Bolivia con envíos a todo el país.',
   keywords: [
@@ -83,7 +84,7 @@ export default async function RootLayout({
 }) {
   const getInstrumentsTypes = async (): Promise<InstrumentType[]> => {
     const res = await fetch(
-      "https://n8n-proyect.onrender.com/webhook/cln/instrumentos/tipos"
+      `${API_BASE_URL}/tipos`
     );
     if (!res.ok) {
       throw new Error("Failed to fetch data");

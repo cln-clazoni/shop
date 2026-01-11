@@ -19,11 +19,17 @@ interface InstrumentClientPageProps {
   id: string;
 }
 
-export default function InstrumentClientPage({ id }: InstrumentClientPageProps) {
+export default function InstrumentClientPage({
+  id,
+}: InstrumentClientPageProps) {
   const [instrument, setInstrument] = useState<Instrument | null>(null);
   const [instrumentTypes, setInstrumentTypes] = useState<InstrumentType[]>([]);
-  const [instrumentBrands, setInstrumentBrands] = useState<InstrumentBrand[]>([]);
-  const [similarInstruments, setSimilarInstruments] = useState<Instrument[]>([]);
+  const [instrumentBrands, setInstrumentBrands] = useState<InstrumentBrand[]>(
+    []
+  );
+  const [similarInstruments, setSimilarInstruments] = useState<Instrument[]>(
+    []
+  );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
@@ -32,11 +38,12 @@ export default function InstrumentClientPage({ id }: InstrumentClientPageProps) 
       setLoading(true);
       setError(null);
       try {
-        const [fetchedInstrument, fetchedTypes, fetchedBrands] = await Promise.all([
-          getInstrumentById(id),
-          getInstrumentTypes(),
-          getInstrumentBrands(),
-        ]);
+        const [fetchedInstrument, fetchedTypes, fetchedBrands] =
+          await Promise.all([
+            getInstrumentById(id),
+            getInstrumentTypes(),
+            getInstrumentBrands(),
+          ]);
 
         if (!fetchedInstrument) {
           notFound();
@@ -87,7 +94,7 @@ export default function InstrumentClientPage({ id }: InstrumentClientPageProps) 
 
   const brandName = instrumentBrands.find(
     (brand) => brand.id === instrument.brand
-  )?.name;
+  )?.nombre;
   const type = instrumentTypes.find((type) => type.id === instrument.type);
 
   return (
@@ -102,10 +109,10 @@ export default function InstrumentClientPage({ id }: InstrumentClientPageProps) 
         </Link>
         <span className="mx-2">/</span>
         <Link
-          href={`/catalog/${type?.id_property}`}
+          href={`/catalog/${type?.id}`}
           className="text-sm text-muted-foreground hover:text-foreground"
         >
-          {type?.name_complete}
+          {type?.name}
         </Link>
         <span className="mx-2">/</span>
         <span className="text-sm">{instrument.name}</span>
@@ -114,65 +121,69 @@ export default function InstrumentClientPage({ id }: InstrumentClientPageProps) 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
         {/* Instrument Image */}
         <div className="relative h-[400px] lg:h-[500px] rounded-lg overflow-hidden">
-          <Image
-            src={instrument.photo}
-            alt={instrument.name}
-            fill
-            className="brightness-150 saturate-160 contrast-110 object-contain"
-            sizes="(max-width: 1024px) 100vw, 50vw"
-            priority
-          />
+          {instrument.photo && (
+            <Image
+              src={instrument.photo}
+              alt={instrument.name}
+              fill
+              className="object-contain"
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              priority
+            />
+          )}
         </div>
 
         {/* Instrument Details */}
         <div className="flex flex-col">
           <div className="mb-2">
             <Link
-              href={`/catalog/${type?.id_property}`}
+              href={`/catalog/${type?.id}`}
               className="text-sm bg-secondary hover:bg-primary text-secondary-foreground hover:text-primary-foreground px-3 py-1 rounded-full transition-colors inline-block"
             >
-              {type?.name_complete}
+              {type?.name}
             </Link>
           </div>
 
           <h1 className="text-3xl font-bold mb-2">{instrument.name}</h1>
           <p className="text-xl text-muted-foreground mb-4">{brandName}</p>
 
-          <p className="text-base mb-6">{instrument.descripcion}</p>
+          <p className="text-base mb-6">{instrument.description}</p>
 
           <div className="mb-6">
             <h3 className="text-lg font-medium mb-2">Detalles</h3>
             <ul className="space-y-3">
               <li className="flex justify-between">
-                <span className="text-muted-foreground">Marca</span>
+                <span className="text-muted-foreground">Marca:</span>
                 <span className="font-medium">{brandName}</span>
               </li>
               <li className="flex justify-between">
-                <span className="text-muted-foreground">Color</span>
-                <span className="font-medium">{instrument.color}</span>
+                <span className="text-muted-foreground">Color:</span>
+                <span className="font-medium">{instrument?.color}</span>
               </li>
               <li className="flex justify-between">
-                <span className="text-muted-foreground">Tipo</span>
-                <span className="font-medium">{type?.name_complete}</span>
+                <span className="text-muted-foreground">Tipo:</span>
+                <span className="font-medium">{type?.name}</span>
               </li>
             </ul>
           </div>
 
-          <div className="mb-6">
-            <h3 className="text-lg font-medium mb-2">Accesorios incluidos</h3>
-            <div className="flex flex-wrap gap-2">
-              {instrument.accessories.map((accessory, index) => (
-                <Badge
-                  key={index}
-                  variant="outline"
-                  className="flex items-center gap-1"
-                >
-                  <Box className="h-3 w-3" />
-                  {accessory}
-                </Badge>
-              ))}
+          {instrument?.accessories?.length > 0 && (
+            <div className="mb-6">
+              <h3 className="text-lg font-medium mb-2">Accesorios incluidos</h3>
+              <div className="flex flex-wrap gap-2">
+                {instrument?.accessories?.map((accessory, index) => (
+                  <Badge
+                    key={index}
+                    variant="outline"
+                    className="flex items-center gap-1"
+                  >
+                    <Box className="h-3 w-3" />
+                    {accessory}
+                  </Badge>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="flex flex-col sm:flex-row gap-4 mt-auto">
             <Button
@@ -208,13 +219,15 @@ export default function InstrumentClientPage({ id }: InstrumentClientPageProps) 
             {similarInstruments.map((instrument) => (
               <Card key={instrument.id} className="overflow-hidden group">
                 <div className="relative h-48">
-                  <Image
-                    src={instrument.photo}
-                    alt={instrument.name}
-                    fill
-                    className="brightness-150 saturate-160 contrast-110 object-cover transition-transform group-hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  />
+                  {instrument.photo && (
+                    <Image
+                      src={instrument.photo}
+                      alt={instrument?.name ?? "Instrument Image"}
+                      fill
+                      className="object-cover transition-transform group-hover:scale-105"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                  )}
                 </div>
                 <CardContent className="p-4">
                   <h3 className="font-semibold text-lg">{instrument.name}</h3>
@@ -222,7 +235,7 @@ export default function InstrumentClientPage({ id }: InstrumentClientPageProps) 
                     {
                       instrumentBrands.find(
                         (brand) => brand.id === instrument.brand
-                      )?.name
+                      )?.nombre
                     }
                   </p>
                   <div className="flex justify-between items-center">

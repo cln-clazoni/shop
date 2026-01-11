@@ -1,7 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
-import { MapPin, Phone, Mail, Clock, Car } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 
 export default function LocationPage() {
@@ -52,7 +49,7 @@ export default function LocationPage() {
           <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-orange-500 to-yellow-300 animate-pulse mb-6 text-center">
             Comunidad Clazoni CLN
           </h2>
-          <Link href="https://chat.whatsapp.com/Jk7vX6Xz4Zp5Z6z2Z4v3xN" passHref>
+          <Link href="https://chat.whatsapp.com/Jk7vX6Xz4Zp5Z6z2Z4v3xN" passHref target="_blank">
             <Button variant="secondary" className="px-12 py-6 text-2xl font-bold bg-gradient-to-r from-yellow-400 via-orange-500 to-yellow-300 text-white transition-transform duration-300 ease-in-out hover:scale-110 hover:brightness-110 border-0 shadow-lg">
               Ingresa aquí
             </Button>

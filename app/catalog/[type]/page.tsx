@@ -11,7 +11,7 @@ interface CategoryPageProps {
 export async function generateStaticParams() {
   try {
     const types: InstrumentType[] = await getInstrumentTypes();
-    return types.map((category) => ({ type: category.id_property }));
+    return types.map((category) => ({ type: category.id }));
   } catch (error) {
     console.error("Failed to generate static params for categories", error);
     return [];

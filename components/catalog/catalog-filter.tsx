@@ -38,7 +38,7 @@ export default function CatalogFilter({ types }: CatalogFilterProps) {
               </div>
             </Link>
             {types.map((type) => (
-              <Link key={type.id} href={`/catalog/${type.id_property}`}>
+              <Link key={type.id} href={`/catalog/${type.id}`}>
                 <div 
                   className={cn(
                     "flex items-center justify-between p-2 rounded-md hover:bg-secondary cursor-pointer",
@@ -46,7 +46,7 @@ export default function CatalogFilter({ types }: CatalogFilterProps) {
                   )}
                   onClick={() => setSelectedType(type.id)}
                 >
-                  <span>{type.name_complete}</span>
+                  <span>{type.name}</span>
                   {selectedType === type.id && <Check className="h-4 w-4" />}
                 </div>
               </Link>
@@ -54,7 +54,7 @@ export default function CatalogFilter({ types }: CatalogFilterProps) {
           </div>
         </AccordionContent>
       </AccordionItem>
-      <AccordionItem value="price">
+      {/* <AccordionItem value="price">
         <AccordionTrigger>Rango de Precio</AccordionTrigger>
         <AccordionContent>
           <div className="p-2">
@@ -69,7 +69,7 @@ export default function CatalogFilter({ types }: CatalogFilterProps) {
             <p className="text-muted-foreground text-sm mb-2">Funcionalidad a implementar en el futuro</p>
           </div>
         </AccordionContent>
-      </AccordionItem>
+      </AccordionItem> */}
     </Accordion>
   );
 }

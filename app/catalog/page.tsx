@@ -13,6 +13,7 @@ import {
   getInstrumentBrands,
 } from "@/lib/api";
 import CatalogFilter from "@/components/catalog/catalog-filter";
+import DownloadCatalogButton from "@/components/catalogo/BotonDescargarCatalogo";
 
 export default function CatalogPage() {
   const [instrumentsData, setInstrumentsData] = useState<Instrument[]>([]);
@@ -24,28 +25,25 @@ export default function CatalogPage() {
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const [instruments, types, brands] = await Promise.all([
-          getInstruments(),
-          getInstrumentTypes(),
-          getInstrumentBrands(),
-        ]);
+    setLoading(true);
+    setError(null);
 
+    Promise.all([getInstruments(), getInstrumentTypes(), getInstrumentBrands()])
+      .then(([instruments, types, brands]) => {
         setInstrumentsData(instruments);
+        console.log("Fetched Instruments:", instruments);
+        console.log("Fetched Brands:", brands);
+
         setInstrumentTypes(types);
         setInstrumentBrands(brands);
-      } catch (err) {
+      })
+      .catch((err) => {
         console.error("Error fetching data:", err);
         setError(err as Error);
-      } finally {
+      })
+      .finally(() => {
         setLoading(false);
-      }
-    };
-
-    fetchData();
+      });
   }, []);
 
   if (loading) {
@@ -74,12 +72,7 @@ export default function CatalogPage() {
             calidad
           </p>
         </div>
-        <Button asChild variant="outline" className="mt-4 md:mt-0">
-          <Link href="/api/download-catalog">
-            <Download className="mr-2 h-4 w-4" />
-            Descargar PDF
-          </Link>
-        </Button>
+        <DownloadCatalogButton />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
@@ -97,14 +90,16 @@ export default function CatalogPage() {
         {/* Main Content */}
         <div className="lg:col-span-3">
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-            {instrumentsData.map((instrument) => (
+            {instrumentsData?.map((instrument) => (
               <Card key={instrument.id} className="overflow-hidden group">
                 <div className="relative h-48">
                   <Image
-                    src={instrument.photo}
+                    src={
+                      instrument.photo || "/images/instrumentPlaceholder.png"
+                    }
                     alt={instrument.name}
                     fill
-                    className="brightness-150 saturate-160 contrast-110 object-contain transition-transform group-hover:scale-105"
+                    className="object-contain transition-transform group-hover:scale-105"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                   <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 opacity-0 group-hover:opacity-100 transition-opacity h-full">
@@ -119,7 +114,7 @@ export default function CatalogPage() {
                     >
                       {
                         instrumentTypes
-                          .find((type) => type.id === instrument.type)
+                          ?.find((type) => type.id === instrument.type)
                           ?.name.split(" ")[2]
                       }
                     </Link>
@@ -131,7 +126,7 @@ export default function CatalogPage() {
                     {
                       instrumentBrands.find(
                         (brand) => brand.id === instrument.brand
-                      )?.name
+                      )?.nombre
                     }
                   </p>
 
@@ -142,7 +137,7 @@ export default function CatalogPage() {
                         `Me interesa comprar "${instrument.name}" marca "${
                           instrumentBrands.find(
                             (brand) => brand.id === instrument.brand
-                          )?.name
+                          )?.nombre
                         }" color "${instrument.color.toLowerCase()}" , me envia el precio y formas de pago.`
                       )}`}
                       target="_blank"

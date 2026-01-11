@@ -56,11 +56,11 @@ export default function Header({ instrumentCategories }: HeaderProps) {
                       <li key={category.id}>
                         <NavigationMenuLink asChild>
                           <Link
-                            href={`/catalog/${category.id_property}`}
+                            href={`/catalog/${category.id}`}
                             className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                           >
                             <div className="text-sm font-medium leading-none">
-                              {category.name_complete}
+                              {category.name}
                             </div>
                             <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                               {category.descripcion}
@@ -139,11 +139,11 @@ export default function Header({ instrumentCategories }: HeaderProps) {
             {instrumentCategories.map((category) => (
               <Link
                 key={category.id}
-                href={`/catalog/${category.id_property}`}
+                href={`/catalog/${category.id}`}
                 className="block px-3 py-2 text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                {category.name_complete}
+                {category.name}
               </Link>
             ))}
             <Link

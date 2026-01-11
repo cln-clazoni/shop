@@ -6,11 +6,7 @@ import Image from "next/image";
 import { ArrowRight, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  Instrument,
-  InstrumentBrand,
-  InstrumentType,
-} from "@/lib/data";
+import { Instrument, InstrumentBrand, InstrumentType } from "@/lib/data";
 import {
   getInstruments,
   getInstrumentBrands,
@@ -18,10 +14,13 @@ import {
 } from "@/lib/api";
 import fondo from "@/public/images/fondo.png";
 import TikTokSection from "@/components/tiktok/TiktokSection";
+import DownloadCatalogButton from "@/components/catalogo/BotonDescargarCatalogo";
 
 export default function HomeClientPage() {
   const [instrumentsData, setInstrumentsData] = useState<Instrument[]>([]);
-  const [instrumentBrands, setInstrumentBrands] = useState<InstrumentBrand[]>([]);
+  const [instrumentBrands, setInstrumentBrands] = useState<InstrumentBrand[]>(
+    []
+  );
   const [instrumentTypes, setInstrumentTypes] = useState<InstrumentType[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
@@ -31,11 +30,12 @@ export default function HomeClientPage() {
       setLoading(true);
       setError(null);
       try {
-        const [fetchedInstruments, fetchedBrands, fetchedTypes] = await Promise.all([
-          getInstruments(),
-          getInstrumentBrands(),
-          getInstrumentTypes(),
-        ]);
+        const [fetchedInstruments, fetchedBrands, fetchedTypes] =
+          await Promise.all([
+            getInstruments(),
+            getInstrumentBrands(),
+            getInstrumentTypes(),
+          ]);
         setInstrumentsData(fetchedInstruments);
         setInstrumentBrands(fetchedBrands);
         setInstrumentTypes(fetchedTypes);
@@ -49,13 +49,13 @@ export default function HomeClientPage() {
     fetchData();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-yellow-500"></div>
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="flex items-center justify-center h-screen">
+  //       <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-yellow-500"></div>
+  //     </div>
+  //   );
+  // }
 
   if (error) {
     return (
@@ -66,19 +66,6 @@ export default function HomeClientPage() {
   }
 
   const featuredInstruments = instrumentsData.slice(0, 4);
-
-  const categoryImages: { [key: string]: string } = {
-    cuerda:
-      "https://images.pexels.com/photos/45243/saxophone-music-gold-gloss-45243.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    viento:
-      "https://images.pexels.com/photos/1049690/pexels-photo-1049690.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    percusion:
-      "https://images.pexels.com/photos/995301/pexels-photo-995301.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    teclado:
-      "https://images.pexels.com/photos/164935/pexels-photo-164935.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    electronico:
-      "https://images.pexels.com/photos/1656066/pexels-photo-1656066.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-  };
 
   return (
     <div className="flex flex-col">
@@ -134,22 +121,19 @@ export default function HomeClientPage() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
             {instrumentTypes.map((category) => (
-              <Link key={category.id} href={`/catalog/${category.id_property}`}>
+              <Link key={category.id} href={`/catalog/${category.id}`}>
                 <div className="group relative h-64 rounded-lg overflow-hidden transition-transform hover:scale-105">
-                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors z-10" />
+                  <div className="absolute inset-0 bg-black/60 group-hover:bg-black/20 transition-colors z-10" />
                   <Image
-                    src={
-                      categoryImages[category.id_property] ||
-                      "https://images.pexels.com/photos/45243/saxophone-music-gold-gloss-45243.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                    }
-                    alt={category.name_complete}
+                    src={category?.photo ?? ''}
+                    alt={category.name}
                     fill
                     className="object-cover transition-transform group-hover:scale-110"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
-                  <div className="absolute inset-0 flex items-center justify-center z-20">
+                  <div className="absolute inset-0 flex items-center justify-center z-20 p-10">
                     <h3 className="text-xl font-bold text-white">
-                      {category.name_complete}
+                      {category.name}
                     </h3>
                   </div>
                 </div>
@@ -172,20 +156,21 @@ export default function HomeClientPage() {
               <Card key={instrument.id} className="overflow-hidden group">
                 <div className="relative h-48">
                   <Image
-                    src={instrument.photo}
+                    src={instrument?.photo ?? ''}
                     alt={instrument.name}
                     fill
-                    className="brightness-150 saturate-160 contrast-110 object-cover transition-transform group-hover:scale-105"
+                    className="object-cover transition-transform group-hover:scale-105"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                   />
                 </div>
                 <CardContent className="p-4">
                   <h3 className="font-semibold text-lg">{instrument.name}</h3>
                   <p className="text-sm text-muted-foreground mb-2">
+                    Marca: {" "}
                     {
                       instrumentBrands.find(
                         (brand) => brand.id === instrument.brand
-                      )?.name
+                      )?.nombre
                     }
                   </p>
                   <div className="flex justify-between items-center">
@@ -239,16 +224,7 @@ export default function HomeClientPage() {
             Descarga nuestro catálogo completo en formato PDF para ver todos
             nuestros productos disponibles, incluso sin conexión.
           </p>
-          <Button
-            size="lg"
-            className="bg-black text-white hover:bg-black/80"
-            asChild
-          >
-            <Link href="/api/download-catalog">
-              <Download className="mr-2 h-5 w-5" />
-              Descargar Catálogo PDF
-            </Link>
-          </Button>
+          <DownloadCatalogButton />
         </div>
       </section>
     </div>
