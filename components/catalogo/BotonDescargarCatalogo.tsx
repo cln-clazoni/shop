@@ -8,7 +8,7 @@ export default function DownloadCatalogButton() {
   const handleDownload = async () => {
     setLoading(true); // Abrir modal
     try {
-      const response = await fetch(`${API_BASE_URL}/catalogo-pdf`);
+      const response = await fetch(`${API_BASE_URL}/descargar-catalogo-pdf`);
       if (!response.ok) throw new Error("Error generando PDF");
 
       const blob = await response.blob();
