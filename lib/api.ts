@@ -1,6 +1,6 @@
 import { Instrument, InstrumentBrand, InstrumentType } from "@/lib/data";
   
-export const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL + "/api";
+export const API_BASE_URL = "https://shop-backend-xaai.onrender.com" + "/api";
 
 /**
  * Función genérica para realizar peticiones fetch y manejar errores comunes.
