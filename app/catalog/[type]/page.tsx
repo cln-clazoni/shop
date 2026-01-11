@@ -1,5 +1,5 @@
-import { getInstrumentTypes } from "@/lib/api";
-import type { InstrumentType } from "@/lib/data";
+import { fetchData, getInstrumentTypes } from "@/lib/api";
+import type { Instrument, InstrumentType } from "@/lib/data";
 import CategoryClientPage from "./CategoryClientPage";
 
 interface CategoryPageProps {
@@ -9,13 +9,8 @@ interface CategoryPageProps {
 }
 
 export async function generateStaticParams() {
-  try {
-    const types: InstrumentType[] = await getInstrumentTypes();
-    return types.map((category) => ({ type: category.id }));
-  } catch (error) {
-    console.error("Failed to generate static params for categories", error);
-    return [];
-  }
+  const res = await fetchData<InstrumentType[]>("/tipos");
+  return res.map((category) => ({ type: category.id }));
 }
 
 export default function CategoryPage({ params }: CategoryPageProps) {

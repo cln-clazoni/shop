@@ -1,13 +1,13 @@
 import { Instrument, InstrumentBrand, InstrumentType } from "@/lib/data";
   
-export const API_BASE_URL = "https://shop-backend-xaai.onrender.com" + "/api";
+export const API_BASE_URL = "https://shop-backend-wtf9.onrender.com" + "/api";
 
 /**
  * Función genérica para realizar peticiones fetch y manejar errores comunes.
  * @param endpoint El endpoint de la API al que se va a llamar.
  * @returns La respuesta en formato JSON.
  */
-async function fetchData<T>(endpoint: string): Promise<T> {
+export async function fetchData<T>(endpoint: string): Promise<T> {
   const res = await fetch(`${API_BASE_URL}${endpoint}`);
   if (!res.ok) {
     if (res.status === 404) {
