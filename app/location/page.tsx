@@ -3,6 +3,9 @@ import Image from "next/image";
 import { MapPin, Phone, Mail, Clock, Car } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import imagen1 from "@/public/images/somos/1.jpg";
+import imagen2 from "@/public/images/somos/2.jpg";
+import imagen3 from "@/public/images/somos/3.jpg";
 
 export default function LocationPage() {
   return (
@@ -83,7 +86,7 @@ export default function LocationPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div className="relative h-64 rounded-lg overflow-hidden">
             <Image
-              src="https://images.pexels.com/photos/4473407/pexels-photo-4473407.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+              src={imagen1.src}
               alt="Interior de la tienda de instrumentos musicales"
               fill
               className="object-cover"
@@ -92,7 +95,7 @@ export default function LocationPage() {
           </div>
           <div className="relative h-64 rounded-lg overflow-hidden">
             <Image
-              src="https://images.pexels.com/photos/3482620/pexels-photo-3482620.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+              src={imagen2.src}
               alt="Guitarra en exhibición"
               fill
               className="object-cover"
@@ -101,7 +104,7 @@ export default function LocationPage() {
           </div>
           <div className="relative h-64 rounded-lg overflow-hidden">
             <Image
-              src="https://images.pexels.com/photos/4087991/pexels-photo-4087991.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+              src={imagen3.src}
               alt="Asesoría personalizada en tienda"
               fill
               className="object-cover"

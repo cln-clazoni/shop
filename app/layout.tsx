@@ -5,6 +5,9 @@ import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import { InstrumentType } from "@/lib/data";
 import { API_BASE_URL } from "@/lib/api";
+import tiendaCLN from "@/public/images/tiendaCLN.png";
+import tiendaCLNico from "@/public/favicon.ico";
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,9 +34,9 @@ export const metadata = {
     canonical: 'https://cln-clazoni.github.io/shop/',
   },
   icons: {
-    icon: `${basePath}/favicon.ico`,
-    shortcut: `${basePath}/favicon.ico`,
-    apple: `${basePath}/images/tiendaCLN.png`,
+    icon: tiendaCLNico.src,
+    shortcut: tiendaCLNico.src,
+    apple: tiendaCLN.src,
   },
   openGraph: {
     title: 'CLN – Clazoni | Instrumentos Musicales en Bolivia',
